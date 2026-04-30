@@ -1,0 +1,182 @@
+# ============================================
+# 传媒技术学院 2026 届毕业设计展网站
+# .gitignore 文件
+# ============================================
+
+# ============================================
+# 环境变量和敏感信息
+# ============================================
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# ============================================
+# 前端 (Nuxt 3 + Node.js)
+# ============================================
+# 依赖
+frontend/node_modules/
+frontend/.pnpm-store/
+
+# Nuxt 构建输出
+frontend/.nuxt/
+frontend/.output/
+frontend/dist/
+
+# 缓存
+frontend/.cache/
+frontend/.temp/
+frontend/.tmp/
+
+# 日志
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# IDE 和编辑器
+frontend/.vscode/
+frontend/.idea/
+frontend/*.swp
+frontend/*.swo
+frontend/*~
+
+# ============================================
+# 后端 (Rust + Cargo)
+# ============================================
+# Cargo 构建输出
+backend/target/
+backend/Cargo.lock
+
+# Rust 调试文件
+backend/**/*.rs.bk
+backend/*.pdb
+
+# ============================================
+# 静态文件 (大文件不提交)
+# ============================================
+# 视频文件 (854MB，太大不适合 Git)
+backend/static/videos/*.mp4
+backend/static/videos/*.avi
+backend/static/videos/*.mov
+backend/static/videos/*.mkv
+
+# 海报图片 (如果文件很大)
+backend/static/posters/*.jpg
+backend/static/posters/*.jpeg
+backend/static/posters/*.png
+backend/static/posters/*.webp
+
+# 保留目录结构
+!backend/static/videos/.gitkeep
+!backend/static/posters/.gitkeep
+
+# ============================================
+# 数据库和 Docker
+# ============================================
+# Docker 数据卷
+docker-data/
+mysql-data/
+redis-data/
+
+# 数据库备份文件
+*.sql.gz
+*.sql.bak
+backup_*.sql
+
+# ============================================
+# 操作系统文件
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# IDE 和编辑器
+# ============================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# Claude Code
+# ============================================
+.claude/settings.local.json
+.claude/memory/
+.claude/scheduled_tasks.json
+
+# ============================================
+# 日志文件
+# ============================================
+*.log
+logs/
+*.log.*
+
+# ============================================
+# 临时文件
+# ============================================
+*.tmp
+*.temp
+*.cache
+.cache/
+tmp/
+temp/
+
+# ============================================
+# 压缩文件 (通常是备份)
+# ============================================
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# ============================================
+# 测试覆盖率
+# ============================================
+coverage/
+*.lcov
+.nyc_output/
+
+# ============================================
+# 其他
+# ============================================
+# 锁文件 (Cargo.lock 已在后端部分忽略)
+# pnpm-lock.yaml 应该提交，所以不在这里忽略

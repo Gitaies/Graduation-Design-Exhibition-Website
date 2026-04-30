@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: media-tech-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: demos
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    networks:
+      - exhibition-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: media-tech-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - exhibition-network
+
+volumes:
+  mysql_data:
+
+networks:
+  exhibition-network:
+    driver: bridge

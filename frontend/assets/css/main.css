@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-blue: #1466ff;
+  --primary-blue-dark: #0b4edc;
+  --primary-cyan: #37c8ff;
+  --text-main: #0f172a;
+  --text-secondary: #64748b;
+  --text-light: #94a3b8;
+  --bg-page: #f5f8ff;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --border-light: rgba(30, 100, 220, 0.12);
+  --shadow-blue: rgba(64, 132, 255, 0.18);
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+}
+
+/* 玻璃拟态效果 */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 8px 32px var(--shadow-blue);
+}
+
+/* 渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
