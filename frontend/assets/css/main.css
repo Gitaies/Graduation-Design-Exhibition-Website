@@ -21,6 +21,18 @@ body {
   color: var(--text-main);
 }
 
+/* 隐藏滚动条 */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* 玻璃拟态效果 */
 .glass-card {
   background: var(--bg-card);

@@ -7,8 +7,8 @@
       <!-- 视频封面 -->
       <div class="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
         <img
-          v-if="work.posterUrl"
-          :src="work.posterUrl"
+          v-if="work.poster_url"
+          :src="work.poster_url"
           :alt="work.title"
           class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           loading="lazy"
@@ -91,22 +91,10 @@
 </template>
 
 <script setup lang="ts">
-interface Work {
-  id: string
-  title: string
-  majorCode: string
-  majorName: string
-  theme: string
-  tags: string[]
-  authors: string[]
-  teacher: string
-  posterUrl: string
-  videoUrl: string
-  duration: string
-  introduction: string
-}
+import type { Work } from '~/types/work'
 
 interface Interaction {
+  workId: string
   likeCount: number
   commentCount: number
   likedByMe: boolean

@@ -29,6 +29,15 @@ export default defineNuxtConfig({
     }
   },
 
+  nitro: {
+    devProxy: {
+      '/static': {
+        target: 'http://localhost:8080/static',
+        changeOrigin: true
+      }
+    }
+  },
+
   experimental: {
     appManifest: false
   },

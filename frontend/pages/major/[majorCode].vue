@@ -192,7 +192,7 @@ const loadWorks = async () => {
       page: 1,
       page_size: 100 // 获取所有作品用于前端筛选
     })
-    allWorks.value = response.items.map(item => item.work)
+    allWorks.value = response.items
   } catch (error) {
     console.error('Failed to load works:', error)
   } finally {

@@ -4,7 +4,9 @@ services:
     container_name: media-tech-mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: demos
+      MYSQL_DATABASE: graduation_exhibition
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     volumes:
@@ -12,6 +14,7 @@ services:
       - ./backend/migrations:/docker-entrypoint-initdb.d
     networks:
       - exhibition-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   redis:
     image: redis:7-alpine

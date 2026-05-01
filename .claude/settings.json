@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000)"
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(curl -s http://localhost:8080/api/works)",
+      "Read(//d/资料/软件工程/**)",
+      "Bash(findstr 29652)",
+      "Bash(mysql -uroot -p123456 -e \"CREATE DATABASE IF NOT EXISTS graduation_exhibition CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(mysql -uroot -p123456 -e \"SHOW DATABASES LIKE 'graduation_exhibition';\")",
+      "Bash(mysql -uroot -p123456 graduation_exhibition -e \"SHOW TABLES;\")"
     ]
   }
 }

@@ -6,8 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **传媒技术学院 2026 届毕业设计展网站** - 一个面向公众的毕业设计展览网站，展示三个专业的学生作品：软件工程、电子信息工程、广播电视工程。
 
-**主题**：智媒融合 · 创启未来  
-**项目状态**：✅ 开发完成（95%），待部署测试
+**主题**：智媒融合 · 创启未来
 
 ## 技术栈
 
@@ -15,7 +14,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **后端**：Rust + axum 0.7 + SQLx + MySQL 8.0 + Redis  
 **包管理器**：pnpm（前端必须使用 pnpm，不要用 npm/yarn）
 
+## 项目特点
+
+- **无需登录**：游客直接浏览、点赞、评论
+- **智能防刷**：Redis 限流 + 指纹识别 + 敏感词过滤
+- **高性能**：Rust 后端 + Nuxt 3 SSR + 游标分页
+- **安全可靠**：XSS 防护 + SQL 注入防护 + 数据哈希存储
+- **响应式设计**：完美适配 PC、平板、手机
+
 ## 快速启动
+
+### 前置条件
+- **本地 MySQL**：如果已安装本地 MySQL（端口 3306），无需 Docker
+- **Docker Desktop**：如果没有本地 MySQL，需要 Docker 来运行 MySQL 和 Redis
 
 ### 一键启动（推荐）
 ```bash
@@ -26,20 +37,27 @@ start.bat
 ./start.sh
 ```
 
-### 手动启动
+### 手动启动（本地 MySQL）
 ```bash
-# 1. 启动数据库和 Redis
-docker-compose up -d
+# 1. 创建数据库
+mysql -uroot -p123456 -e "CREATE DATABASE IF NOT EXISTS graduation_exhibition CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
-# 2. 等待 MySQL 启动并导入数据
-sleep 15
-docker exec -i media-tech-mysql mysql -uroot -ppassword graduation_exhibition < backend/import_works.sql
+# 2. 运行迁移脚本
+for file in backend/migrations/*.sql; do
+  mysql -uroot -p123456 --default-character-set=utf8mb4 graduation_exhibition < "$file"
+done
 
-# 3. 启动后端（新终端）
+# 3. 导入作品数据
+mysql -uroot -p123456 --default-character-set=utf8mb4 graduation_exhibition < backend/backend/import_works.sql
+
+# 4. 启动 Redis（如果使用 Docker）
+docker run -d -p 6379:6379 redis:7-alpine
+
+# 5. 启动后端（新终端）
 cd backend
 cargo run
 
-# 4. 启动前端（新终端）
+# 6. 启动前端（新终端）
 cd frontend
 pnpm install  # 首次运行
 pnpm dev
@@ -79,14 +97,20 @@ docker-compose down -v      # 停止并删除数据卷
 
 ### 数据库操作
 ```bash
-# 导入作品数据
-docker exec -i media-tech-mysql mysql -uroot -ppassword graduation_exhibition < backend/import_works.sql
+# 使用本地 MySQL 导入作品数据
+mysql -uroot -p123456 --default-character-set=utf8mb4 graduation_exhibition < backend/backend/import_works.sql
 
-# 进入 MySQL 容器
-docker exec -it media-tech-mysql mysql -uroot -ppassword graduation_exhibition
+# 进入 MySQL 命令行
+mysql -uroot -p123456 graduation_exhibition
 
 # 查看表结构
-docker exec media-tech-mysql mysql -uroot -ppassword graduation_exhibition -e "SHOW TABLES"
+mysql -uroot -p123456 graduation_exhibition -e "SHOW TABLES"
+
+# 查看作品数量
+mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM works"
+
+# 使用 Docker MySQL（如果使用 docker-compose）
+docker exec -i media-tech-mysql mysql -uroot -p123456 graduation_exhibition < backend/backend/import_works.sql
 ```
 
 ## 架构概览
@@ -110,7 +134,7 @@ media-tech-graduation-exhibition/
 │   │   └── utils/           # 工具函数（2个）
 │   ├── static/              # 静态文件
 │   │   ├── videos/          # 12个作品视频（w001.mp4 - w012.mp4）
-│   │   └── posters/         # 作品海报（待准备）
+│   │   └── posters/         # 12个作品海报（w001.jpg - w012.jpg）
 │   ├── migrations/          # 数据库迁移（4个SQL文件）
 │   └── import_works.sql     # 作品数据导入脚本
 ├── docker-compose.yml       # Docker 编排
@@ -199,12 +223,17 @@ NUXT_PUBLIC_API_BASE=http://localhost:8080/api
 ```env
 APP_HOST=0.0.0.0
 APP_PORT=8080
-DATABASE_URL=mysql://root:password@localhost:3306/graduation_exhibition
+DATABASE_URL=mysql://root:123456@localhost:3306/graduation_exhibition
 REDIS_URL=redis://localhost:6379
 SERVER_SALT=your-secret-salt-here  # 生产环境必须修改
 CORS_ALLOWED_ORIGINS=http://localhost:3000
 TRUST_PROXY=true
 ```
+
+**重要**：
+- 数据库密码默认为 `123456`（本地开发）
+- 数据库名必须是 `graduation_exhibition`（不是 `demos`）
+- 生产环境必须修改 `SERVER_SALT`
 
 ## 项目完成状态
 
@@ -219,17 +248,20 @@ TRUST_PROXY=true
 - ✅ 评论系统（游标分页）
 - ✅ 排行榜（全部/今日/本周）
 - ✅ 12 个作品数据和视频文件
+- ✅ 12 个作品海报文件（w001.jpg - w012.jpg）
 - ✅ 一键启动脚本
 
-### 待完成（部署前）
-- ⚠️ 启动 Docker 环境
-- ⚠️ 导入作品数据到数据库
+### 待完成（首次部署）
+- ⚠️ 启动 MySQL 和 Redis（Docker 或本地）
+- ⚠️ 运行数据库迁移脚本
+- ⚠️ 导入作品数据
+- ⚠️ 启动后端和前端服务
 - ⚠️ 完整功能测试
 
 ### 可选优化
-- 🔲 准备 12 个作品封面图片（w001.jpg - w012.jpg）
-- 🔲 DeepSeek API 评论审核
+- 🔲 DeepSeek API 评论审核集成
 - 🔲 作品管理后台（/admin/works）
+- 🔲 CDN 加速静态资源
 
 ## 重要注意事项
 
@@ -237,12 +269,22 @@ TRUST_PROXY=true
 **前端必须使用 pnpm**，不要使用 npm 或 yarn。项目已配置 `"packageManager": "pnpm@9.0.0"`。
 
 ### 数据库
-使用 MySQL 8.0（不是 PostgreSQL）。数据库名：graduation_exhibition。
+使用 MySQL 8.0。数据库名：`graduation_exhibition`。
+
+**重要**：
+- docker-compose.yml 中的 `MYSQL_DATABASE` 应该是 `graduation_exhibition`
+- 导入数据时必须使用 `--default-character-set=utf8mb4`，否则中文会乱码
+- 数据库密码默认为 `123456`（本地开发）
 
 ### 静态文件
-- 视频文件：`backend/static/videos/`（w001.mp4 - w012.mp4，已就绪）
-- 海报文件：`backend/static/posters/`（w001.jpg - w012.jpg，待准备）
-- 访问路径：`/static/videos/w001.mp4`
+- 视频文件：`backend/static/videos/`（w001.mp4 - w012.mp4，✅ 已就绪）
+- 海报文件：`backend/static/posters/`（w001.jpg - w012.jpg，✅ 已就绪）
+- 前端通过 Nuxt 代理访问：`/static/videos/w001.mp4` → `http://localhost:8080/static/videos/w001.mp4`
+
+### 前后端数据格式
+- **后端 API 返回**：下划线格式（`major_code`, `poster_url`, `like_count`）
+- **前端类型定义**：`frontend/types/work.ts` 使用下划线格式匹配 API
+- **Pinia Store**：内部转换为驼峰格式（`majorCode`, `posterUrl`, `likeCount`）
 
 ### 端口占用
 - 3000：前端

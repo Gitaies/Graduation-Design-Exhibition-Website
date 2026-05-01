@@ -215,25 +215,6 @@ const loadMore = async () => {
 onMounted(async () => {
   await loadComments()
 })
-    hasMore.value = false
-  } catch (error) {
-    console.error('加载评论失败:', error)
-  } finally {
-    isLoadingMore.value = false
-  }
-}
-
-// 组件挂载时加载评论
-onMounted(async () => {
-  try {
-    // TODO: 调用 API 获取评论列表
-    // const response = await $fetch(`/api/works/${props.workId}/comments?page=1&page_size=${pageSize}`)
-    // comments.value = response.data.items
-    // hasMore.value = response.data.page * response.data.page_size < response.data.total
-  } catch (error) {
-    console.error('加载评论失败:', error)
-  }
-})
 </script>
 
 <style scoped>

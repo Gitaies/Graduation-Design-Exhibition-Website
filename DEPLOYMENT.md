@@ -55,9 +55,14 @@ docker-compose up -d
 # 等待 15 秒
 sleep 15
 
-# 导入作品数据
-docker exec -i media-tech-mysql mysql -uroot -ppassword graduation_exhibition < backend/import_works.sql
+# 导入作品数据（注意：数据库名是 graduation_exhibition，密码是 123456）
+docker exec -i media-tech-mysql mysql -uroot -p123456 --default-character-set=utf8mb4 graduation_exhibition < backend/import_works.sql
 ```
+
+**重要提示**：
+- 数据库名必须是 `graduation_exhibition`
+- 密码是 `123456`（docker-compose.yml 中配置）
+- 必须使用 `--default-character-set=utf8mb4` 避免中文乱码
 
 ### 3. 启动后端
 
@@ -155,8 +160,11 @@ pnpm dev
 
 **解决方案**:
 ```bash
-# 重新导入数据
-docker exec -i media-tech-mysql mysql -uroot -ppassword graduation_exhibition < backend/import_works.sql
+# 重新导入数据（注意字符集）
+docker exec -i media-tech-mysql mysql -uroot -p123456 --default-character-set=utf8mb4 graduation_exhibition < backend/import_works.sql
+
+# 验证数据是否导入成功
+docker exec media-tech-mysql mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM works"
 ```
 
 ### 5. Rust 编译错误
@@ -227,7 +235,7 @@ docker restart media-tech-mysql
 
 ```bash
 # 进入 MySQL 容器
-docker exec -it media-tech-mysql mysql -uroot -ppassword graduation_exhibition
+docker exec -it media-tech-mysql mysql -uroot -p123456 graduation_exhibition
 
 # 进入 Redis 容器
 docker exec -it media-tech-redis redis-cli
@@ -237,13 +245,16 @@ docker exec -it media-tech-redis redis-cli
 
 ```bash
 # 查看所有表
-docker exec media-tech-mysql mysql -uroot -ppassword graduation_exhibition -e "SHOW TABLES"
+docker exec media-tech-mysql mysql -uroot -p123456 graduation_exhibition -e "SHOW TABLES"
 
 # 查看作品数量
-docker exec media-tech-mysql mysql -uroot -ppassword graduation_exhibition -e "SELECT COUNT(*) FROM works"
+docker exec media-tech-mysql mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM works"
 
 # 查看点赞数量
-docker exec media-tech-mysql mysql -uroot -ppassword graduation_exhibition -e "SELECT COUNT(*) FROM likes WHERE is_active = 1"
+docker exec media-tech-mysql mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM likes WHERE is_active = 1"
+
+# 查看评论数量
+docker exec media-tech-mysql mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM comments WHERE status = 'visible'"
 ```
 
 ---
