@@ -57,11 +57,13 @@ backend/*.pdb
 # ============================================
 # 静态文件 (大文件不提交)
 # ============================================
-# 视频文件 (854MB，太大不适合 Git)
+# 视频文件 (太大不适合 Git)
 backend/static/videos/*.mp4
 backend/static/videos/*.avi
 backend/static/videos/*.mov
 backend/static/videos/*.mkv
+frontend/assets/images/hero/hero_bg1.mp4
+backend/static/hero/hero_bg.mp4
 
 # 海报图片 (如果文件很大)
 backend/static/posters/*.jpg
