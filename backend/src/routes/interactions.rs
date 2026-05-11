@@ -18,6 +18,7 @@ pub struct SummaryQuery {
 pub async fn get_summary(
     State(state): State<AppState>,
     Query(params): Query<SummaryQuery>,
+    headers: HeaderMap,
 ) -> Json<serde_json::Value> {
     let work_ids: Vec<&str> = params.work_ids.split(',').collect();
 
@@ -28,6 +29,16 @@ pub async fn get_summary(
             "data": []
         }));
     }
+
+    // 获取游客身份信息（用于查询 liked_by_me）
+    let visitor_id = headers
+        .get("X-Visitor-Id")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("unknown");
+
+    let ip_addr = ip::extract_ip(&headers)
+        .map(|ip| ip::ip_to_string(&ip))
+        .unwrap_or_else(|| "unknown".to_string());
 
     let mut results = Vec::new();
 
@@ -52,10 +63,29 @@ pub async fn get_summary(
         .await
         .unwrap_or(0);
 
+        // 查询当前用户是否点赞
+        let fingerprint_hash = fingerprint::generate_fingerprint(
+            work_id,
+            visitor_id,
+            &ip_addr,
+            &state.config.server_salt,
+        );
+
+        let liked_by_me: bool = sqlx::query_scalar(
+            "SELECT is_active FROM likes WHERE work_id = ? AND visitor_fingerprint_hash = ?"
+        )
+        .bind(work_id)
+        .bind(&fingerprint_hash)
+        .fetch_optional(&state.db)
+        .await
+        .unwrap_or(None)
+        .unwrap_or(false);
+
         results.push(json!({
             "work_id": work_id,
             "like_count": like_count,
-            "comment_count": comment_count
+            "comment_count": comment_count,
+            "liked_by_me": liked_by_me
         }));
     }
 

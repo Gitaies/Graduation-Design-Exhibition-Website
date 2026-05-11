@@ -18,31 +18,58 @@ pub async fn get_comments(
 ) -> Json<serde_json::Value> {
     let limit = params.limit.unwrap_or(20).clamp(1, 50);
 
-    let mut query = String::from(
-        "SELECT * FROM comments WHERE work_id = ? AND status = 'visible'"
-    );
-
-    if let Some(_cursor) = &params.cursor {
-        query.push_str(" AND created_at < (SELECT created_at FROM comments WHERE public_id = ?)");
-    }
-
-    query.push_str(" ORDER BY created_at DESC LIMIT ?");
-
     let comments: Vec<Comment> = if let Some(cursor) = &params.cursor {
-        sqlx::query_as(&query)
+        // 获取游标位置的 created_at 和 id
+        let cursor_info: Option<(chrono::DateTime<chrono::Utc>, String)> = sqlx::query_as(
+            "SELECT created_at, id FROM comments WHERE public_id = ?"
+        )
+        .bind(cursor)
+        .fetch_optional(&state.db)
+        .await
+        .unwrap_or(None);
+
+        if let Some((cursor_created_at, cursor_id)) = cursor_info {
+            sqlx::query_as::<_, Comment>(
+                "SELECT * FROM comments
+                 WHERE work_id = ? AND status = 'visible'
+                 AND (created_at < ? OR (created_at = ? AND id < ?))
+                 ORDER BY created_at DESC, id DESC
+                 LIMIT ?"
+            )
             .bind(&work_id)
-            .bind(cursor)
+            .bind(&cursor_created_at)
+            .bind(&cursor_created_at)
+            .bind(&cursor_id)
             .bind(limit)
             .fetch_all(&state.db)
             .await
             .unwrap_or_default()
+        } else {
+            // 游标无效，返回第一页
+            sqlx::query_as::<_, Comment>(
+                "SELECT * FROM comments
+                 WHERE work_id = ? AND status = 'visible'
+                 ORDER BY created_at DESC, id DESC
+                 LIMIT ?"
+            )
+            .bind(&work_id)
+            .bind(limit)
+            .fetch_all(&state.db)
+            .await
+            .unwrap_or_default()
+        }
     } else {
-        sqlx::query_as(&query)
-            .bind(&work_id)
-            .bind(limit)
-            .fetch_all(&state.db)
-            .await
-            .unwrap_or_default()
+        sqlx::query_as::<_, Comment>(
+            "SELECT * FROM comments
+             WHERE work_id = ? AND status = 'visible'
+             ORDER BY created_at DESC, id DESC
+             LIMIT ?"
+        )
+        .bind(&work_id)
+        .bind(limit)
+        .fetch_all(&state.db)
+        .await
+        .unwrap_or_default()
     };
 
     let has_more = comments.len() >= limit as usize;
@@ -114,11 +141,15 @@ pub async fn create_comment(
 
     let ip_hash = fingerprint::hash_ip(&ip_addr, &state.config.server_salt);
 
-    // 检查 IP 限流（60秒/20次）
-    if !rate_limit::check_ip_rate_limit(&state.redis, &ip_addr)
-        .await
-        .unwrap_or(false)
-    {
+    // 检查 IP 限流（60秒/20次）；Redis 不可用时放行（fail-open）
+    let ip_allowed = match rate_limit::check_ip_rate_limit(&state.redis, &ip_addr).await {
+        Ok(allowed) => allowed,
+        Err(e) => {
+            tracing::warn!("IP 限流检查失败，放行: {:?}", e);
+            true
+        }
+    };
+    if !ip_allowed {
         return Json(json!({
             "code": 40001,
             "message": "操作太频繁，请稍后再试",
@@ -126,14 +157,35 @@ pub async fn create_comment(
         }));
     }
 
-    // 检查指纹限流（30秒/1次）
-    if !rate_limit::check_comment_rate_limit(&state.redis, &fingerprint_hash)
-        .await
-        .unwrap_or(false)
-    {
+    // 检查指纹限流（30秒/1次）；Redis 不可用时放行（fail-open）
+    let comment_allowed = match rate_limit::check_comment_rate_limit(&state.redis, &fingerprint_hash).await {
+        Ok(allowed) => allowed,
+        Err(e) => {
+            tracing::warn!("评论限流检查失败，放行: {:?}", e);
+            true
+        }
+    };
+    if !comment_allowed {
         return Json(json!({
             "code": 40001,
             "message": "评论太频繁，请稍后再试",
+            "data": null
+        }));
+    }
+
+    // 校验作品是否存在
+    let work_exists: Option<(String,)> = sqlx::query_as(
+        "SELECT id FROM works WHERE id = ? LIMIT 1"
+    )
+    .bind(&work_id)
+    .fetch_optional(&state.db)
+    .await
+    .unwrap_or(None);
+
+    if work_exists.is_none() {
+        return Json(json!({
+            "code": 40400,
+            "message": "作品不存在",
             "data": null
         }));
     }

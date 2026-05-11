@@ -1,4 +1,5 @@
 use redis::AsyncCommands;
+use uuid::Uuid;
 use crate::error::AppError;
 
 /// Redis 限流检查（滑动窗口）
@@ -13,13 +14,14 @@ pub async fn check_rate_limit(
         .await
         .map_err(|_| AppError::InternalError)?;
 
+    // 使用毫秒精度避免同一秒内的请求被覆盖
     let now = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
-        .as_secs();
+        .as_millis() as u64;
 
     // 使用 ZSET 实现滑动窗口
-    let window_start = now - window_seconds;
+    let window_start = now - (window_seconds * 1000);
 
     // 删除窗口外的旧记录
     let _: () = conn
@@ -37,13 +39,14 @@ pub async fn check_rate_limit(
         return Ok(false); // 超过限流
     }
 
-    // 添加当前请求
+    // 添加当前请求 - 使用唯一 member 避免覆盖
+    let member = format!("{}:{}", now, Uuid::new_v4());
     let _: () = conn
-        .zadd(key, now, now)
+        .zadd(key, now as f64, member)
         .await
         .map_err(|_| AppError::InternalError)?;
 
-    // 设置过期时间
+    // 设置过期时间（秒）
     let _: () = conn
         .expire(key, window_seconds as i64)
         .await

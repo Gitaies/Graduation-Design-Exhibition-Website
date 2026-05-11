@@ -3,7 +3,6 @@ use axum::{
     Router,
 };
 use tower_http::cors::{CorsLayer, Any};
-use tower_http::services::ServeDir;
 use std::net::SocketAddr;
 
 mod config;
@@ -48,9 +47,6 @@ async fn main() {
         .allow_methods(Any)
         .allow_headers(Any);
 
-    // 配置静态文件服务
-    let static_service = ServeDir::new("static");
-
     // 构建路由
     let app = Router::new()
         .route("/api/health", get(routes::health::health_check))
@@ -62,7 +58,6 @@ async fn main() {
         .route("/api/works/:work_id/comments", get(routes::comments::get_comments))
         .route("/api/works/:work_id/comments", post(routes::comments::create_comment))
         .route("/api/rankings/likes", get(routes::rankings::get_like_ranking))
-        .nest_service("/static", static_service)
         .layer(cors)
         .with_state(app_state);
 

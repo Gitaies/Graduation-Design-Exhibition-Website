@@ -8,7 +8,8 @@ pub struct RankingItem {
     pub major_code: String,
     pub major_name: String,
     pub poster_url: Option<String>,
-    pub like_count: i32,
+    pub introduction: Option<String>,
+    pub like_count: i64,
 }
 
 #[derive(Debug, Deserialize)]

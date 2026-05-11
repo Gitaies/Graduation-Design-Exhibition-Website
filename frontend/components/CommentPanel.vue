@@ -4,7 +4,7 @@
       <svg class="w-6 h-6 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
       </svg>
-      评论 ({{ comments.length }})
+      评论 ({{ totalCommentCount }})
     </h2>
 
     <!-- 评论输入框 -->
@@ -18,7 +18,7 @@
       ></textarea>
       <div class="flex items-center justify-between mt-3">
         <span class="text-sm text-text-light">
-          {{ commentContent.length }} / 200
+          已输入 {{ charCount }} / 200 字
         </span>
         <button
           @click="submitComment"
@@ -111,6 +111,12 @@ const nextCursor = ref<string | null>(null)
 const hasMore = ref(true)
 
 const displayedComments = computed(() => comments.value)
+
+const charCount = computed(() => commentContent.value.length)
+
+const totalCommentCount = computed(() => {
+  return interactionsStore.getInteraction(props.workId)?.commentCount ?? comments.value.length
+})
 
 // 格式化时间
 const formatTime = (timestamp: string) => {

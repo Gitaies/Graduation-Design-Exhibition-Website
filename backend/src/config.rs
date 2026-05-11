@@ -7,6 +7,7 @@ pub struct Config {
     pub server_salt: String,
     pub cors_allowed_origins: Vec<String>,
     pub trust_proxy: bool,
+    pub cos_base_url: String,
 }
 
 impl Config {
@@ -32,6 +33,8 @@ impl Config {
                 .unwrap_or_else(|_| "false".to_string())
                 .parse()
                 .unwrap_or(false),
+            cos_base_url: std::env::var("COS_BASE_URL")
+                .unwrap_or_else(|_| "https://whcm-1353140174.cos.ap-nanjing.myqcloud.com".to_string()),
         }
     }
 }

@@ -63,6 +63,12 @@ const toggleLike = async () => {
   try {
     const response = await interactionsStore.toggleLike(props.workId)
 
+    // 检查业务错误码
+    if (response && response.code !== 0) {
+      alert(response.message || '操作失败')
+      return
+    }
+
     // 点赞动画
     if (response.code === 0 && response.data.liked) {
       justLiked.value = true

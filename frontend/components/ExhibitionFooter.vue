@@ -1,39 +1,374 @@
 <template>
-  <footer class="bg-white border-t border-border-light py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-        <!-- 关于 -->
-        <div>
-          <h3 class="text-lg font-bold mb-4">关于毕业设计展</h3>
-          <p class="text-sm text-text-secondary leading-relaxed">
-            传媒技术学院2026届毕业设计展，展示三大专业的创新成果与应用实践。
-          </p>
+  <footer ref="footerRoot" class="site-footer">
+    <!-- Accent rule at top -->
+    <div class="footer-accent" aria-hidden="true"></div>
+
+    <div class="footer-container">
+      <div class="footer-grid">
+        <!-- Identity block -->
+        <div class="footer-identity">
+          <div class="footer-year" aria-hidden="true">2026</div>
+          <h2 class="footer-college">传媒技术学院</h2>
+          <p class="footer-exhibition">2026 届毕业设计展</p>
+          <p class="footer-theme">智媒融合 · 创启未来</p>
         </div>
 
-        <!-- 快速链接 -->
-        <div>
-          <h3 class="text-lg font-bold mb-4">快速链接</h3>
-          <ul class="space-y-2">
-            <li><NuxtLink to="/majors" class="text-sm text-text-secondary hover:text-primary-blue transition-colors">专业展区</NuxtLink></li>
-            <li><NuxtLink to="/ranking" class="text-sm text-text-secondary hover:text-primary-blue transition-colors">点赞热榜</NuxtLink></li>
-            <li><NuxtLink to="/about" class="text-sm text-text-secondary hover:text-primary-blue transition-colors">关于毕展</NuxtLink></li>
+        <!-- Majors -->
+        <nav class="footer-majors" aria-label="专业方向">
+          <p class="footer-label">专业方向 <span class="footer-label-en">/ MAJORS</span></p>
+          <ul class="footer-major-list">
+            <li class="footer-major-item">
+              <span class="footer-major-name">软件工程</span>
+              <span class="footer-major-theme">数智焕新</span>
+            </li>
+            <li class="footer-major-item">
+              <span class="footer-major-name">电子信息工程</span>
+              <span class="footer-major-theme">芯火智造</span>
+            </li>
+            <li class="footer-major-item">
+              <span class="footer-major-name">广播电视工程</span>
+              <span class="footer-major-theme">虚实共生</span>
+            </li>
           </ul>
-        </div>
+        </nav>
 
-        <!-- 联系方式 -->
-        <div>
-          <h3 class="text-lg font-bold mb-4">联系我们</h3>
-          <p class="text-sm text-text-secondary">传媒技术学院</p>
-          <p class="text-sm text-text-secondary">邮箱: contact@example.com</p>
+        <!-- Contact -->
+        <div class="footer-contact">
+          <p class="footer-label">联系我们 <span class="footer-label-en">/ CONTACT</span></p>
+          <p class="footer-info-item">主办方：武汉传媒学院传媒技术学院</p>
+          <p class="footer-info-item">联系方式：027-81979023</p>
         </div>
       </div>
 
-      <!-- 版权信息 -->
-      <div class="border-t border-border-light pt-8 text-center">
-        <p class="text-sm text-text-light">
-          © 2026 传媒技术学院. All rights reserved.
-        </p>
+      <!-- Bottom bar -->
+      <div class="footer-bottom">
+        <p class="footer-copy">©2026 传媒技术学院 毕业作品设计展 版权所有</p>
+        <p class="footer-rights">未经授权 禁止转载与商用</p>
       </div>
     </div>
+
+    <!-- Subtle dot-grid pattern overlay -->
+    <div class="footer-pattern" aria-hidden="true"></div>
+
+    <!-- Corner geometric decoration -->
+    <svg class="footer-geo" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      <rect x="4" y="4" width="36" height="36" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.18" />
+      <rect x="12" y="12" width="36" height="36" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.12" />
+      <line x1="48" y1="22" x2="78" y2="22" stroke="currentColor" stroke-width="1" opacity="0.14" />
+      <line x1="48" y1="40" x2="66" y2="40" stroke="currentColor" stroke-width="1" opacity="0.10" />
+      <circle cx="96" cy="18" r="2.5" stroke="currentColor" stroke-width="1" opacity="0.15" />
+      <circle cx="102" cy="30" r="1.5" fill="currentColor" opacity="0.10" />
+    </svg>
   </footer>
 </template>
+
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+const footerRoot = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.registerPlugin(ScrollTrigger)
+
+  if (!footerRoot.value) return
+
+  const ctx = gsap.context(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: footerRoot.value,
+        start: 'top bottom',
+        toggleActions: 'play none none none',
+      },
+    })
+
+    tl.from('.footer-accent', {
+      scaleX: 0,
+      transformOrigin: 'left center',
+      duration: 0.8,
+      ease: 'expo.out',
+    })
+    .from('.footer-year', {
+      y: 40,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'expo.out',
+    }, '-=0.4')
+    .from('.footer-college, .footer-exhibition, .footer-theme', {
+      y: 24,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'expo.out',
+    }, '-=0.3')
+    .from('.footer-label', {
+      y: 16,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.06,
+      ease: 'power3.out',
+    }, '-=0.2')
+    .from('.footer-major-item, .footer-info-item', {
+      y: 12,
+      opacity: 0,
+      duration: 0.45,
+      stagger: 0.05,
+      ease: 'power3.out',
+    }, '-=0.15')
+    .from('.footer-bottom', {
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+    }, '-=0.1')
+    .from('.footer-geo', {
+      opacity: 0,
+      scale: 0.85,
+      duration: 0.7,
+      ease: 'expo.out',
+    }, '-=0.3')
+  }, footerRoot.value)
+
+  onUnmounted(() => {
+    ctx.revert()
+  })
+})
+</script>
+
+<style scoped>
+/* ============================================
+   Footer — Architectural Editorial
+   ============================================ */
+
+.site-footer {
+  position: relative;
+  background-color: oklch(0.985 0.002 252);
+  background-image: url('/images/ftbg1.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 80px 0 32px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---- Accent rule ---- */
+.footer-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    oklch(0.52 0.22 265) 0%,
+    oklch(0.65 0.18 235) 40%,
+    transparent 100%
+  );
+  transform-origin: left center;
+}
+
+/* ---- Container ---- */
+.footer-container {
+  position: relative;
+  z-index: 2;
+  max-width: 95rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+@media (min-width: 1024px) {
+  .footer-container {
+    padding: 0 2rem;
+  }
+}
+
+/* ---- Grid ---- */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  margin-bottom: 56px;
+}
+
+/* ---- Identity ---- */
+.footer-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-year {
+  font-size: clamp(5rem, 9vw, 7.5rem);
+  font-weight: 200;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: oklch(0.82 0.015 255);
+  margin-bottom: 12px;
+  user-select: none;
+  font-family: 'Inter', 'Geist', -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.footer-college {
+  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  font-weight: 700;
+  color: oklch(0.18 0.008 255);
+  letter-spacing: 0.01em;
+}
+
+.footer-exhibition {
+  font-size: 0.925rem;
+  color: oklch(0.45 0.01 255);
+  font-weight: 450;
+}
+
+.footer-theme {
+  font-size: 0.875rem;
+  color: oklch(0.52 0.18 260);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ---- Labels ---- */
+.footer-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: oklch(0.35 0.008 255);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.footer-label-en {
+  font-weight: 400;
+  color: oklch(0.6 0.005 255);
+  letter-spacing: 0.08em;
+}
+
+/* ---- Majors ---- */
+.footer-major-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-major-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.footer-major-name {
+  font-size: 0.925rem;
+  font-weight: 500;
+  color: oklch(0.25 0.01 255);
+}
+
+.footer-major-theme {
+  font-size: 0.775rem;
+  color: oklch(0.55 0.04 260);
+  font-weight: 450;
+}
+
+/* ---- Contact ---- */
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-info-item {
+  font-size: 0.9rem;
+  color: oklch(0.35 0.008 255);
+}
+
+/* ---- Bottom bar ---- */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid oklch(0.88 0.006 255);
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: oklch(0.5 0.005 255);
+}
+
+.footer-rights {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: oklch(0.55 0.005 255);
+  letter-spacing: 0.04em;
+}
+
+/* ---- Dot grid pattern ---- */
+.footer-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: radial-gradient(
+    circle,
+    oklch(0.6 0.04 255) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+}
+
+/* ---- Geometric corner decoration ---- */
+.footer-geo {
+  position: absolute;
+  bottom: 18px;
+  right: 4rem;
+  width: 200px;
+  height: 200px;
+  z-index: 1;
+  pointer-events: none;
+  color: oklch(0.52 0.22 265);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 56px 0 24px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-bottom: 40px;
+  }
+
+  .footer-year {
+    font-size: 5rem;
+    line-height: 0.9;
+    margin-bottom: 8px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .footer-geo {
+    width: 100px;
+    height: 100px;
+    bottom: 32px;
+    right: 1rem;
+  }
+}
+</style>

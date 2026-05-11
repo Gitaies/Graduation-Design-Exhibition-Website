@@ -1,0 +1,262 @@
+[
+  {
+    "work_id": "wsoftware001",
+    "major_code": "software",
+    "video_num": "001",
+    "video_path": "Se/001.mp4",
+    "title": "基于MCP协议的个人出行智能体设计与实现",
+    "author": "李荫渠",
+    "filename": "10.李荫渠22403030211-基于MCP协议的个人出行智能体设计与实现.docx",
+    "text_preview": "基于MCP协议的个人出行智能体设计与实现学生姓名班级：李荫渠 大数据B2201班指导教师：林久麟1、作品简介本作品针对出行应用数据孤岛、交互差等痛点问题，设计实现了轻量本地化智能出行助手。系统采用B/S四层架构，前端以HTML/CSS/JS构建对话界面，后端基于Node.js+Express实现网关与服务，通过Ollama本地化部署qwen3:8b模型。依托MCP协议实现工具智能调度，避免了对云端"
+  },
+  {
+    "work_id": "wsoftware002",
+    "major_code": "software",
+    "video_num": "002",
+    "video_path": "Se/002.mp4",
+    "title": "基于RAG和DeepSeek的电脑硬件推荐系统设计与实现",
+    "author": "石亿",
+    "filename": "11.石亿-基于RAG和DeepSeek的电脑硬件推荐系统设计与实现.docx",
+    "text_preview": "基于RAG和DeepSeek的电脑硬件推荐系统设计与实现整体介绍本系统面向DIY装机用户痛点，依托RAG检索增强生成与DeepSeek大语言模型，打造一站式智能电脑硬件推荐平台。系统采用Spring Boot+Vue3前后端分离架构，集硬件数据爬虫、知识库管理、AI智能推荐、配置方案分享、社区交流于一体，可根据用户预算、用途自动生成兼容、高性价比装机方案，有效解决普通用户硬件知识不足、兼容性难判断"
+  },
+  {
+    "work_id": "wsoftware003",
+    "major_code": "software",
+    "video_num": "003",
+    "video_path": "Se/003.mp4",
+    "title": "基于微信小程序的校友服务平台设计与实现",
+    "author": "舒焱",
+    "filename": "12.舒焱22403030218-基于微信小程序的校友服务平台设计与实现.docx",
+    "text_preview": "作品名称基于微信小程序的校友服务平台设计与实现姓名：舒焱  班级：前端B2201班指导教师：祝念一、作品简介本作品是一个面向高校校友的综合服务平台，包含微信小程序端和Web管理后台。系统以微信小程序为载体，为校友提供一键登录、身份认证、动态社交、活动报名、返校预约、私信联络等功能；Web管理后台为学校管理员提供用户管理、内容审核、预约审批、数据统计等能力。系统旨在解决校友身份认证难、信息沟通不畅、"
+  },
+  {
+    "work_id": "wsoftware004",
+    "major_code": "software",
+    "video_num": "004",
+    "video_path": "Se/004.mp4",
+    "title": "基于YOLO与大数据技术的交通流量智能分析系统设计与实现",
+    "author": "陈曾烨",
+    "filename": "2.陈曾烨22403030201-基于YOLO与大数据技术的交通流量智能分析系统设计与实现.docx",
+    "text_preview": "一、作品简介本作品是基于YOLO11与大数据技术的交通流量智能分析系统，面向中小规模交通场景，实现行人与车辆的自动检测、计数、数据存储及可视化分析。系统以深度学习目标检测为核心，结合视频图像处理、目标追踪与数据统计技术，可对图片、视频及摄像头实时流进行处理，完成交通流量的自动化监测。系统界面简洁易用、部署轻量化，具有较强的实用性与应用价值。二、核心功能系统具备五大核心功能：一是支持图片、视频、摄像"
+  },
+  {
+    "work_id": "wsoftware005",
+    "major_code": "software",
+    "video_num": "005",
+    "video_path": "Se/005.mp4",
+    "title": "基于Vue＋Node.js的糖尿病健康咨询系统设计与实现",
+    "author": "马小念",
+    "filename": "3.马小念22403030215-基于Vue＋Node.js的糖尿病健康咨询系统设计与实现.docx",
+    "text_preview": "作品名称：基于Vue＋Node.js的糖尿病健康咨询系统设计与实现姓名：马小念班级：前端B2201班指导教师：罗灿峰 讲师作品简介本系统是基于Vue 3和Node.js前后端分离架构开发的糖尿病健康咨询平台。采用Element Plus组件库构建响应式界面，Express提供RESTful API，MySQL数据持久化，集成火山引擎DeepSeek大模型实现AI智能咨询，通过JWT认证保障数据安全"
+  },
+  {
+    "work_id": "wsoftware006",
+    "major_code": "software",
+    "video_num": "006",
+    "video_path": "Se/006.mp4",
+    "title": "基于机器学习+Spark 的农作物产量分析系统设计与实现",
+    "author": "何思瑶+",
+    "filename": "4.何思瑶+22403030134-基于机器学习+Spark 的农作物产量分析系统设计与实现.docx",
+    "text_preview": "作品名称：基于机器学习+Spark的农作物产量分析系统设计与实现学生姓名：何思瑶班    级：大数据B2201班作品简介：本系统面向现代农业数字化、智能化需求，以Hadoop+Spark为大数据底层，采用Django、Vue、Echarts、MySQL构建Web平台。基于百万级农业数据，融合LightGBM、K-Means、FP-Growth算法，实现数据处理、多维分析、产量预测、高产规律挖掘与风"
+  },
+  {
+    "work_id": "wsoftware007",
+    "major_code": "software",
+    "video_num": "007",
+    "video_path": "Se/007.mp4",
+    "title": "基于SpringBoot的社区活动室预约系统设计与实现",
+    "author": "胡聪",
+    "filename": "6.胡聪-22403030205-基于SpringBoot的社区活动室预约系统设计与实现.docx",
+    "text_preview": "基于SpringBoot的社区活动室预约系统设计与实现大数据B2201班胡聪指导教师：冯晓磊1、作品简介本作品为社区活动室预约管理系统，面向居民与社区管理员提供“线上预约—线下核销—信用治理—审计追溯”的闭环服务。系统采用前后端分离架构：前端基于Vue3与Element Plus构建单页应用，后端基于Spring Boot、MyBatis-Plus 与MySQL实现业务与数据管理，并集成ZXing"
+  },
+  {
+    "work_id": "wsoftware008",
+    "major_code": "software",
+    "video_num": "008",
+    "video_path": "Se/008.mp4",
+    "title": "基于微信小程序+Node.js的医疗陪诊服务系统设计与实现",
+    "author": "陈瑞",
+    "filename": "7.陈瑞22403030202-基于微信小程序+Node.js的医疗陪诊服务系统设计与实现.docx",
+    "text_preview": "作品名称：基于微信小程序+Node.js的医疗陪诊服务系统设计与实现 学生姓名班级：陈瑞 前端B2201班指导教师：郭学芹作品简介随着老龄化社会的加剧和医疗服务需求的增长，医疗陪诊服务成为解决患者就医难题的重要方式。传统陪诊服务存在信息不对称、预约流程复杂、服务管理效率低下等问题，难以满足用户多样化的需求。本毕业设计基于微信小程序、Node.js和MySQL等技术，构建了一个数字化医疗陪诊服务系统"
+  },
+  {
+    "work_id": "wsoftware009",
+    "major_code": "software",
+    "video_num": "009",
+    "video_path": "Se/009.mp4",
+    "title": "基于SpringBoot＋Vue的心理咨询系统设计与实现",
+    "author": "罗量",
+    "filename": "8.22403030315罗量-基于SpringBoot＋Vue的心理咨询系统设计与实现.docx",
+    "text_preview": "——22403030315罗量1.作品简介本系统是面向高校学生的心理健康服务平台，采用SpringBoot+Vue前后端分离架构，结合MySQL、Redis实现数据存储与缓存加速。系统集成了标准化心理测评、AI智能分析、师生实时咨询三大核心模块，为学生提供便捷的心理状态筛查与个性化建议，助力高校构建高效、可落地的心理健康服务体系。 1.1例图2. 核心功能系统核心功能包含：多维度心理测评与报告生成"
+  },
+  {
+    "work_id": "wsoftware010",
+    "major_code": "software",
+    "video_num": "010",
+    "video_path": "Se/010.mp4",
+    "title": "基于语音识别的智能系统设计与实现",
+    "author": "刘芸",
+    "filename": "9.刘芸22403030113-基于语音识别的智能系统设计与实现.docx",
+    "text_preview": "作品名称：基于语音识别的智能笔记系统设计与实现学生姓名：刘芸班级：前端B2201班指导教师：夏杰内容三个部分： 作品简介 本作品是一款面向学习与办公场景的智能笔记管理系统，采用前后端分离架构开发，前端以 Vue.js 为核心构建响应式交互界面，后端基于 Flask 框架搭建轻量服务，搭配 SQLite 数据库实现数据持久化。系统集成语音实时转写、关键词智能标记、AI 思维导图生成、笔记全生命周期管"
+  },
+  {
+    "work_id": "welectronic001",
+    "major_code": "electronic",
+    "video_num": "001",
+    "video_path": "Ele/001.mp4",
+    "title": "基于图像处理的智能车双车跟随控制研究",
+    "author": "祝加辉",
+    "filename": "1-祝加辉-展板内容-基于图像处理的智能车双车跟随控制研究.docx",
+    "text_preview": "基于图像处理的智能车双车跟随控制研究Research on Intelligent Vehicle Dual-Vehicle Following Control Based on Image Processing设计人：祝加辉班级：电信B2201指导教师：蒋汪萍 副教授作品简介本作品设计并实现了一套基于图像处理的智能车双车跟随控制系统，以英飞凌TC264为主控芯片，融合视觉感知、多传感器融合与串并"
+  },
+  {
+    "work_id": "welectronic002",
+    "major_code": "electronic",
+    "video_num": "002",
+    "video_path": "Ele/002.mp4",
+    "title": "基于视觉伺服的嵌入式识别与抓取系统设计",
+    "author": "胡彬彬",
+    "filename": "10-胡彬彬-展板内容-基于视觉伺服的嵌入式识别与抓取系统设计.docx",
+    "text_preview": "基于视觉伺服的嵌入式识别与抓取系统设计Design of Embedded Recognition and Grasping System Based on Visual Servoing设计人：胡彬彬班级：电信B2201指导教师：陶慧芳 副教授作品简介本设计提出一种基于树莓派与STM32双主控架构的视觉伺服嵌入式目标识别与抓取系统。以树莓派作为视觉处理单元，结合摄像头模块与YOLOv8-nano"
+  },
+  {
+    "work_id": "welectronic003",
+    "major_code": "electronic",
+    "video_num": "003",
+    "video_path": "Ele/003.mp4",
+    "title": "基于STM32的气象数据采集与无线传输系统设计",
+    "author": "黄友成",
+    "filename": "11-黄友成-展板内容-基于STM32的气象数据采集与无线传输系统设计.docx",
+    "text_preview": "基于STM32的气象数据采集与无线传输系统设计Design of a Meteorological Data Acquisition and Wireless Transmission System Based on STM32设计人：黄友成班级：电信B2201指导教师：杨瑞 副教授作品简介本设计基于STM32F103C8T6单片机打造，针对传统环境监测设备功能单一、传输不便的痛点，构建了一套集成"
+  },
+  {
+    "work_id": "welectronic004",
+    "major_code": "electronic",
+    "video_num": "004",
+    "video_path": "Ele/004.mp4",
+    "title": "智能快递柜控制系统的设计",
+    "author": "付智宇",
+    "filename": "2-付智宇-展板内容-智能快递柜控制系统的设计.docx",
+    "text_preview": "智能快递柜控制系统的设计Design of the Control System for Smart Parcel Lockers设计人：付智宇班级：电信B2201指导教师：杨洁 作品简介本设计针对快递服务最后一公里配送效率和安全性问题，基于STM32制作的智能快递柜控制系统。通过矩阵键盘、RFID读卡器、LCD显示屏、继电器模块、蜂鸣器以及4G通信模块等硬件，构建了一套完整的自助存取件控制系统。"
+  },
+  {
+    "work_id": "welectronic005",
+    "major_code": "electronic",
+    "video_num": "005",
+    "video_path": "Ele/005.mp4",
+    "title": "太阳能板自动追光系统设计",
+    "author": "龚力",
+    "filename": "3-龚力-展板内容-太阳能板自动追光系统设计.docx",
+    "text_preview": "太阳能板自动追光系统设计Design of an Automatic Sunlight Tracking System for Solar Panels设计人：龚力班级：电信B2201指导教师：陶慧芳 副教授作品简介本设计针对固定式太阳能光伏系统能量捕获效率低的问题，基于STM32打造双轴自动追光系统。通过光敏电阻阵列采集光照信号，驱动双轴机构精准追踪太阳方位，兼具自动/手动控制、自供电与实时显示"
+  },
+  {
+    "work_id": "welectronic006",
+    "major_code": "electronic",
+    "video_num": "006",
+    "video_path": "Ele/006.mp4",
+    "title": "遥控旋转LED显示屏的设计",
+    "author": "金鹏",
+    "filename": "4-金鹏-展板内容-遥控旋转LED显示屏的设计.docx",
+    "text_preview": "遥控旋转LED显示屏的设计Design of Remote-Controlled Rotating LED Display设计人：金鹏班级：电信B2201指导教师：蒋汪萍 副教授作品简介本设计基于STC单片机与视觉暂留原理，实现一款遥控旋转LED显示屏。系统由直流减速电机带动LED显示板高速旋转，主控精准控制点阵亮灭时间，在人眼中形成稳定的文字/图案；同时集成红外遥控模块，可远程切换显示内容、调节"
+  },
+  {
+    "work_id": "welectronic007",
+    "major_code": "electronic",
+    "video_num": "007",
+    "video_path": "Ele/007.mp4",
+    "title": "智能桌面宠物机器人设计Smart desktop pet robot设计人：熊欣悦班级：电信B2201指导教师：",
+    "author": "熊欣悦",
+    "filename": "5-熊欣悦-展板内容-智能桌面宠物机器人.docx",
+    "text_preview": "智能桌面宠物机器人设计Smart desktop pet robot设计人：熊欣悦班级：电信B2201指导教师：李文 助教作品简介本设计旨在开发一款基于STM32的智能桌面宠物机器人系统，通过集成语音识别、触摸传感、微型舵机、OLED显示屏及RGB灯带等多类交互模块，构建一套可离线运行、支持多种交互模式的情感化伴侣设备。系统不仅可实现语音指令响应、触摸状态切换、拟人化表情与动作协同输出等基础功能，"
+  },
+  {
+    "work_id": "welectronic008",
+    "major_code": "electronic",
+    "video_num": "008",
+    "video_path": "Ele/008.mp4",
+    "title": "办公室智能节能照明系统的设计与实现",
+    "author": "艾勃霖 展板内容",
+    "filename": "6-艾勃霖 展板内容-办公室智能节能照明系统的设计与实现.docx",
+    "text_preview": "办公室智能节能照明系统的设计与实现Design and Implementation of Intelligent Energy-saving Lighting System in Office设计人：艾勃霖班级：电信B2201指导教师：杨洁 作品简介本设计针对传统办公室照明能源浪费、控制僵化的问题，基于 STM32 打造智能节能照明系统。通过光敏传感器与人体红外传感器采集环境光强与人员活动信息，"
+  },
+  {
+    "work_id": "welectronic009",
+    "major_code": "electronic",
+    "video_num": "009",
+    "video_path": "Ele/009.mp4",
+    "title": "基于STM32的多功能手表的设计与实现",
+    "author": "许元基",
+    "filename": "7-许元基-展示内容-基于STM32的多功能手表的设计与实现.docx",
+    "text_preview": "基于 STM32 的多功能手表的设计与实现Design of a Multifunctional Watch Based on STM32设计人：许元基班 级：电信 B2201指导教师：杨瑞 副教授作品简介本设计针对市面上智能穿戴设备功能冗余、价格偏高、生态封闭、操作复杂等问题，基于STM32F103C8T6微控制器设计并实现一款多功能智能手表。系统集成高精度实时时钟、姿态检测、环境监测、人机交互"
+  },
+  {
+    "work_id": "welectronic010",
+    "major_code": "electronic",
+    "video_num": "010",
+    "video_path": "Ele/010.mp4",
+    "title": "基于MSPM0的智能小车巡线系统的设计与实现",
+    "author": "刘润豪",
+    "filename": "8-刘润豪-展板内容-基于MSPM0的智能小车巡线系统的设计与实现.docx",
+    "text_preview": "基于MSPM0的智能小车巡线系统的设计与实现Design and Implementation of an Intelligent Line-Following Car System Based on MSPM0设计人：刘润豪班级：电信B2201指导教师：陶慧芳 副教授作品简介设计以TI MSPM0G3507单片机核心，构建了包含传感器、电机驱动、显示及主控模块的自动巡线小车系统。小车通过多路灰度"
+  },
+  {
+    "work_id": "welectronic011",
+    "major_code": "electronic",
+    "video_num": "011",
+    "video_path": "Ele/011.mp4",
+    "title": "基于人脸识别的智能门禁系统设计",
+    "author": "周宝玉",
+    "filename": "9-周宝玉-展板内容-基于人脸识别的智能门禁系统设计.docx",
+    "text_preview": "基于人脸识别的智能门禁系统设计Design of Intelligent Access Control System Based on Face Recognition设计人：周宝玉班级：电信B2201指导教师：褚立岑 副教授作品简介本设计针对传统门禁易丢失、易冒用、安全性低、管理成本高等痛点，基于STM32打造多模式智能门禁系统。融合人脸识别与射频卡双重认证，具备图像采集、身份比对、门锁控制、实"
+  },
+  {
+    "work_id": "wbroadcast001",
+    "major_code": "broadcast",
+    "video_num": "001",
+    "video_path": "Rte/001.mp4",
+    "title": "作品简介：本作品是一个基于 MATLAB 与软件无线电平台的 OFDM 无线通信系统仿真项目，以广",
+    "author": "石新佳",
+    "filename": "10石新佳.docx",
+    "text_preview": "作品简介：本作品是一个基于 MATLAB 与软件无线电平台的 OFDM 无线通信系统仿真项目，以广播电视工程专业的数字传输原理为核心，构建了完整的视频信号收发链路。系统采用卷积编码、QPSK 调制、OFDM 基带调制、RRC 滤波等关键技术，通过 eNodeX30B 平台实现无线信号的发射与接收，同时完成载波同步、频偏补偿与信道解码，最终还原视频信号。该设计验证了 OFDM 技术在无线传输中的抗干"
+  },
+  {
+    "work_id": "wbroadcast002",
+    "major_code": "broadcast",
+    "video_num": "002",
+    "video_path": "Rte/002.mp4",
+    "title": "本作品基于UE5引擎搭建晚会虚拟植入包装系统，通过集成Nanite、Lumen、Ni",
+    "author": "陈亚萍",
+    "filename": "1陈亚萍.docx",
+    "text_preview": "本作品基于UE5引擎搭建晚会虚拟植入包装系统，通过集成Nanite、Lumen、Niagara等前沿技术，实现虚拟场景、道具、特效与实景舞台的高保真实时融合。系统采用模块化设计理念，核心模块涵盖舞台灯光、全息特效、动态灯牌、虚拟角色、视频播放及实时控制六大功能单元，支持4K直播渲染输出与多镜头同步控制，具备低延迟（<50ms）与亚像素级融合精度。该技术可广泛应用于春晚、商业晚会、企业年会等演出场景"
+  },
+  {
+    "work_id": "wbroadcast003",
+    "major_code": "broadcast",
+    "video_num": "003",
+    "video_path": "Rte/003.mp4",
+    "title": "作品简介：本作品是基于STM32的离线语音电视遥控系统，以STM32F103C8T6为控制核心",
+    "author": "刘雅丽",
+    "filename": "3刘雅丽.docx",
+    "text_preview": "作品简介：本作品是基于STM32的离线语音电视遥控系统，以STM32F103C8T6为控制核心，采用LD3320语音识别模块，配合红外收发与OLED显示，实现电视语音开关机、音量调节、频道切换等功能。系统无需联网即可稳定运行，具备响应快、操作简单、隐私安全等特点。有效解决传统遥控器使用繁琐、易丢失、老人小孩操作困难等问题，大幅提升电视操控的便捷性与智能化水平。核心功能：1.离线语音识别：采用LD3"
+  },
+  {
+    "work_id": "wbroadcast004",
+    "major_code": "broadcast",
+    "video_num": "004",
+    "video_path": "Rte/004.mp4",
+    "title": "基于UE5的沉浸式音视频展播场馆设计与实现作品简介：针对传统实体展播场馆空间",
+    "author": "王楚天",
+    "filename": "7王楚天.docx",
+    "text_preview": "基于UE5的沉浸式音视频展播场馆设计与实现作品简介：针对传统实体展播场馆空间受限、体验形式单调、运营成本过高，以及高精度模型与多路空间音频并发调度引发性能不均、沉浸中断等难题，基于Unreal Engine 5搭建沉浸式音视频展播场馆系统。系统采用模块化架构，融合Nanite、Lumen、空间音频关键技术，以C++与蓝图协同开发，实现视听双模态协同沉浸与高效交互，为中小型专业数字展馆提供轻量化可复"
+  },
+  {
+    "work_id": "wbroadcast005",
+    "major_code": "broadcast",
+    "video_num": "005",
+    "video_path": "Rte/005.mp4",
+    "title": "作品简介：本作品针对综艺活动现场制作需求，设计并实现了一套16讯道4K超高清EFP视频",
+    "author": "高雅琦",
+    "filename": "9高雅琦.docx",
+    "text_preview": "作品简介：本作品针对综艺活动现场制作需求，设计并实现了一套16讯道4K超高清EFP视频系统。系统采用分层模块化架构，完成全链路信号流规划、核心设备选型与系统集成，兼顾制作效率与播出安全，满足综艺活动录播与直播的全流程制作需求。系统设计：系统分为信源接入层、核心调度与处理层、信号分发与录制层及终端监看辅助层，采用主备冗余架构（双切换台、双矩阵、双同步机），基于12G-SDI基带传输，实现16路讯道I"
+  }
+]

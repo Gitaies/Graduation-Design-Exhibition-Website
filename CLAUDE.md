@@ -119,51 +119,45 @@ docker exec -i media-tech-mysql mysql -uroot -p123456 graduation_exhibition < ba
 ```
 media-tech-graduation-exhibition/
 ├── frontend/                 # Nuxt 3 前端
-│   ├── pages/               # 路由页面（6个）
-│   ├── components/          # Vue 组件（7个）
-│   ├── stores/              # Pinia 状态管理（3个）
-│   ├── composables/         # 组合式函数
+│   ├── pages/               # 路由页面（4个）
+│   ├── components/          # Vue 组件（8个）
+│   ├── stores/              # Pinia 状态管理（2个）
+│   ├── composables/         # 组合式函数（3个）
+│   ├── plugins/             # Nuxt 插件
 │   ├── types/               # TypeScript 类型定义
 │   └── nuxt.config.ts       # Nuxt 配置
 ├── backend/                 # Rust axum 后端
 │   ├── src/
 │   │   ├── main.rs          # 入口文件
-│   │   ├── routes/          # API 路由（6个模块）
-│   │   ├── models/          # 数据模型（4个）
-│   │   ├── services/        # 业务逻辑（3个）
+│   │   ├── routes/          # API 路由（7个模块）
+│   │   ├── models/          # 数据模型（5个）
+│   │   ├── services/        # 业务逻辑（4个）
 │   │   └── utils/           # 工具函数（2个）
-│   ├── static/              # 静态文件
-│   │   ├── videos/          # 12个作品视频（w001.mp4 - w012.mp4）
-│   │   └── posters/         # 12个作品海报（w001.jpg - w012.jpg）
-│   ├── migrations/          # 数据库迁移（4个SQL文件）
-│   └── import_works.sql     # 作品数据导入脚本
+│   ├── migrations/          # 数据库迁移（8个SQL文件）
+│   └── backend/import_works.sql  # 作品数据导入脚本
 ├── docker-compose.yml       # Docker 编排
 ├── start.sh / start.bat     # 一键启动脚本
-└── README_DEPLOYMENT.md     # 详细部署指南
+└── DEPLOYMENT.md            # 详细部署指南
 ```
 
 ### 核心模块
 
 **前端页面**（基于文件系统路由）：
-- `/` - 首页（3D 立方体、专业入口）
-- `/majors` - 专业展区
+- `/` - 首页（3D 科技立方体、专业入口）
 - `/major/:majorCode` - 专业作品列表（software/electronic/broadcast）
 - `/works/:workId` - 作品详情（视频播放、点赞、评论）
-- `/ranking` - 点赞热榜
-- `/about` - 关于毕展
+- `/ranking` - 点赞热榜（今日/本周/总榜）
 
 **后端 API**：
 - `GET /api/health` - 健康检查
 - `GET /api/works` - 作品列表（支持分页和专业筛选）
 - `GET /api/works/:id` - 作品详情
-- `GET /api/interactions/summary` - 批量获取交互统计
-- `GET /api/works/:workId/interaction` - 单个作品交互状态
-- `POST /api/works/:workId/like/toggle` - 切换点赞状态
+- `GET /api/interactions/summary` - 批量获取交互统计（含 liked_by_me）
+- `GET /api/works/:workId/interaction` - 单个作品交互状态（含 liked_by_me）
+- `POST /api/works/:workId/like/toggle` - 切换点赞状态（每日重置）
 - `GET /api/works/:workId/comments` - 评论列表（游标分页）
 - `POST /api/works/:workId/comments` - 提交评论
 - `GET /api/rankings/likes?range=all` - 点赞热榜
-- `GET /static/posters/:filename` - 作品海报
-- `GET /static/videos/:filename` - 作品视频
 
 ### 数据库设计
 
@@ -175,8 +169,10 @@ media-tech-graduation-exhibition/
 ## 核心功能实现
 
 ### 游客身份识别
-- 前端：localStorage 存储 visitor_id（UUID）
-- 后端：SHA256(work_id + visitor_id + ip + server_salt) 生成指纹哈希
+- 前端：localStorage 存储 visitor_id（UUID），不同浏览器/用户自动隔离
+- 后端：SHA256(work_id + visitor_id + ip + 日期 + server_salt) 生成指纹哈希
+- 日期参与哈希，确保每天凌晨后同一用户可重新点赞（日重置机制）
+- 校园网多用户场景：visitor_id 为主区分因子，共享公网 IP 不影响独立性
 - 自动生成中文昵称：形容词+名词+4位数字（如"快乐熊猫4821"）
 
 ### 限流策略（Redis 滑动窗口）
@@ -191,9 +187,15 @@ media-tech-graduation-exhibition/
 - 敏感词过滤：本地敏感词库
 - IP 和指纹：SHA256 哈希后存储
 
+### 点赞系统
+- 原子化切换：`INSERT ... ON DUPLICATE KEY UPDATE is_active = NOT is_active`，消除并发竞争
+- 日重置：指纹含日期，每天凌晨后同一用户可对同一作品再次点赞
+- 点赞数为跨天累计（所有 is_active=TRUE 记录的总和）
+- 取消点赞仅影响当天记录，历史日点赞保留
+- 数据库错误会记录日志并返回 500，不再静默吞掉
+
 ### 性能优化
 - 游标分页：避免深分页（comments 表）
-- 软删除：点赞使用 is_active 字段
 - GPU 加速动画：优先使用 transform 和 opacity
 - Nuxt 3 SSR：首屏加载快、SEO 友好
 
@@ -201,7 +203,7 @@ media-tech-graduation-exhibition/
 
 ### 前端（Vue 3 + TypeScript）
 - 使用 Composition API + `<script setup>` 语法
-- 状态管理：Pinia stores（visitor, interactions, ranking）
+- 状态管理：Pinia stores（visitor, interactions）
 - 样式：Tailwind CSS 工具类，避免自定义 CSS
 - 动画：GSAP 3.12+，优先使用 GPU 加速属性
 
@@ -217,6 +219,7 @@ media-tech-graduation-exhibition/
 ### 前端环境变量（frontend/.env）
 ```env
 NUXT_PUBLIC_API_BASE=http://localhost:8080/api
+NUXT_PUBLIC_COS_BASE_URL=https://whcm-1353140174.cos.ap-nanjing.myqcloud.com
 ```
 
 ### 后端环境变量（backend/.env）
@@ -228,6 +231,7 @@ REDIS_URL=redis://localhost:6379
 SERVER_SALT=your-secret-salt-here  # 生产环境必须修改
 CORS_ALLOWED_ORIGINS=http://localhost:3000
 TRUST_PROXY=true
+COS_BASE_URL=https://whcm-1353140174.cos.ap-nanjing.myqcloud.com
 ```
 
 **重要**：
@@ -238,17 +242,17 @@ TRUST_PROXY=true
 ## 项目完成状态
 
 ### 已完成（100%）
-- ✅ 前端 6 个页面 + 7 个组件
+- ✅ 前端 4 个页面 + 8 个组件
 - ✅ 后端完整 API（10+ 个接口）
 - ✅ 数据库表结构（4 个表）
 - ✅ 游客指纹识别（SHA256）
 - ✅ Redis 限流（滑动窗口）
 - ✅ 内容审核（敏感词、HTML 转义）
-- ✅ 点赞系统（软删除）
+- ✅ 点赞系统（日重置 + 原子化切换）
 - ✅ 评论系统（游标分页）
 - ✅ 排行榜（全部/今日/本周）
-- ✅ 12 个作品数据和视频文件
-- ✅ 12 个作品海报文件（w001.jpg - w012.jpg）
+- ✅ 33 个作品完整数据（含标题、作者、简介等）
+- ✅ 33 个作品视频文件（腾讯云 COS 存储）
 - ✅ 一键启动脚本
 
 ### 待完成（首次部署）
@@ -277,9 +281,13 @@ TRUST_PROXY=true
 - 数据库密码默认为 `123456`（本地开发）
 
 ### 静态文件
-- 视频文件：`backend/static/videos/`（w001.mp4 - w012.mp4，✅ 已就绪）
-- 海报文件：`backend/static/posters/`（w001.jpg - w012.jpg，✅ 已就绪）
-- 前端通过 Nuxt 代理访问：`/static/videos/w001.mp4` → `http://localhost:8080/static/videos/w001.mp4`
+- **视频和海报**：存储在腾讯云 COS 对象存储
+  - COS 基础 URL：`https://whcm-1353140174.cos.ap-nanjing.myqcloud.com`
+  - 软件工程：`/resource/SE/001.mp4` - `/resource/SE/012.mp4`（海报为 `.jpg`）
+  - 电子信息：`/resource/Ele/001.mp4` - `/resource/Ele/012.mp4`（海报为 `.jpg`）
+  - 广播电视：`/resource/RTE/001.mp4` - `/resource/RTE/012.mp4`（海报为 `.jpg`）
+- 前端直接访问 COS URL，无需通过后端代理
+- 数据库中存储完整的 COS URL
 
 ### 前后端数据格式
 - **后端 API 返回**：下划线格式（`major_code`, `poster_url`, `like_count`）
@@ -294,12 +302,11 @@ TRUST_PROXY=true
 
 ## 参考文档
 
-- [PROJECT_DELIVERY.md](PROJECT_DELIVERY.md) - 项目交付文档
-- [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) - 完成总结
-- [README_DEPLOYMENT.md](README_DEPLOYMENT.md) - 详细部署指南
-- [PROJECT_STATUS.md](PROJECT_STATUS.md) - 项目状态和测试清单
-- [PRD.md](PRD.md) - 产品需求文档
 - [README.md](README.md) - 项目说明
+- [PRD.md](PRD.md) - 产品需求文档
+- [DEPLOYMENT.md](DEPLOYMENT.md) - 详细部署指南
+- [COS_MIGRATION.md](COS_MIGRATION.md) - COS 资源迁移说明
+- [毕业设计作品汇总.md](毕业设计作品汇总.md) - 作品信息源文件
 
 ## 设计规范
 
@@ -376,8 +383,7 @@ docker restart media-tech-mysql
 
 ## 开发建议
 
-1. **修改代码前**：先阅读 [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) 了解项目完成状态
+1. **修改代码前**：先阅读 CLAUDE.md 了解项目架构
 2. **添加新功能**：参考现有模块的实现模式（如 likes.rs、comments.rs）
 3. **修改数据库**：在 migrations/ 目录添加新的迁移文件
-4. **测试功能**：使用 [PROJECT_STATUS.md](PROJECT_STATUS.md) 中的测试清单
-5. **部署前**：查看 [README_DEPLOYMENT.md](README_DEPLOYMENT.md) 的部署检查清单
+4. **部署前**：查看 [DEPLOYMENT.md](DEPLOYMENT.md) 的部署检查清单

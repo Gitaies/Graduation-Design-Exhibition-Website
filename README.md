@@ -27,60 +27,23 @@
 
 ## 📚 文档导航
 
-- **[CLAUDE.md](CLAUDE.md)** - 完整项目文档（开发指南）
-- **[PRD.md](PRD.md)** - 产品需求文档
-- **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - 项目状态和测试清单
-- **[DEPLOYMENT.md](DEPLOYMENT.md)** - 部署指南
+- **[CLAUDE.md](CLAUDE.md)** — 完整项目文档（开发指南）
+- **[PRD.md](PRD.md)** — 产品需求文档
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** — 部署指南
+- **[COS_MIGRATION.md](COS_MIGRATION.md)** — COS 资源迁移说明
 
 ## 📦 静态资源说明
 
-**重要提示**：本项目的视频文件未包含在 Git 仓库中，需要单独获取。
+作品视频和封面存储在**腾讯云 COS 对象存储**，无需本地存放静态文件。
 
-### 视频文件结构
+**COS 基础 URL**: `https://whcm-1353140174.cos.ap-nanjing.myqcloud.com`
 
-视频文件应放置在 `backend/static/videos/` 目录下，命名规则：
+### 资源路径
+- 软件工程: `resource/Se/001-012.mp4`（12个）
+- 电子信息工程: `resource/Ele/001-011.mp4`（11个）
+- 广播电视工程: `resource/Rte/001-010.mp4`（10个）
 
-```
-backend/static/videos/
-├── w001.mp4  # 软件工程作品1
-├── w002.mp4  # 软件工程作品2
-├── w003.mp4  # 软件工程作品3
-├── w004.mp4  # 软件工程作品4
-├── w005.mp4  # 电子信息工程作品1
-├── w006.mp4  # 电子信息工程作品2
-├── w007.mp4  # 电子信息工程作品3
-├── w008.mp4  # 电子信息工程作品4
-├── w009.mp4  # 广播电视工程作品1
-├── w010.mp4  # 广播电视工程作品2
-├── w011.mp4  # 广播电视工程作品3
-└── w012.mp4  # 广播电视工程作品4
-```
-
-### 海报文件结构
-
-海报文件已放置在 `backend/static/posters/` 目录下：
-
-```
-backend/static/posters/
-├── w001.jpg  # 软件工程作品1海报
-├── w002.jpg  # 软件工程作品2海报
-├── w003.jpg  # 软件工程作品3海报
-├── w004.jpg  # 软件工程作品4海报
-├── w005.jpg  # 电子信息工程作品1海报
-├── w006.jpg  # 电子信息工程作品2海报
-├── w007.jpg  # 电子信息工程作品3海报
-├── w008.jpg  # 电子信息工程作品4海报
-├── w009.jpg  # 广播电视工程作品1海报
-├── w010.jpg  # 广播电视工程作品2海报
-├── w011.jpg  # 广播电视工程作品3海报
-└── w012.jpg  # 广播电视工程作品4海报
-```
-
-### 获取方式
-
-请联系项目维护者获取完整的静态资源文件包，或从以下方式获取：
-
-- 💬 微信：[Gitaies]
+**总计**: 33个作品视频，详情参见 [COS_MIGRATION.md](COS_MIGRATION.md)
 
 ## 🚀 快速启动
 
@@ -92,11 +55,9 @@ backend/static/posters/
    cd 传媒技术学院2026界毕业设计展网页
    ```
 
-2. **获取静态资源**：
-   - 视频文件已包含在项目中（`backend/static/videos/`）
-   - 海报文件已包含在项目中（`backend/static/posters/`）
-   - 共 12 个视频文件（w001.mp4 ~ w012.mp4，约 854MB）
-   - 共 12 个海报文件（w001.jpg ~ w012.jpg）
+2. **静态资源**：
+   - 视频和封面存储在腾讯云 COS，无需本地存放
+   - 详见 [COS_MIGRATION.md](COS_MIGRATION.md)
 
 3. **安装依赖**：
    - **Docker Desktop**（推荐，用于 MySQL 和 Redis）
@@ -137,11 +98,10 @@ backend/static/posters/
 │   │   ├── models/      # 数据模型（4个）
 │   │   ├── services/    # 业务逻辑（3个）
 │   │   └── utils/       # 工具函数（2个）
-│   ├── migrations/      # 数据库迁移（4个表）
-│   ├── static/          # 静态文件
-│   │   ├── videos/      # 作品视频（12个）
-│   │   └── posters/     # 作品海报（待准备）
-│   └── import_works.sql # 作品数据导入脚本
+│   ├── migrations/      # 数据库迁移脚本
+│   └── backend/         # SQL 导入脚本
+│       ├── import_works.sql           # 作品数据导入
+│       └── import_works_complete.sql  # 完整33作品导入
 ├── docker-compose.yml    # Docker 编排配置
 ├── start.sh / start.bat  # 一键启动脚本
 └── README.md
@@ -169,8 +129,6 @@ backend/static/posters/
 - `GET /api/works/:workId/comments` - 获取评论列表（游标分页）
 - `POST /api/works/:workId/comments` - 提交评论
 - `GET /api/rankings/likes?range=all` - 获取点赞热榜（all/today/week）
-- `GET /static/posters/:filename` - 获取作品海报
-- `GET /static/videos/:filename` - 获取作品视频
 
 ### 核心特性
 
@@ -225,6 +183,7 @@ backend/static/posters/
 
 ```env
 NUXT_PUBLIC_API_BASE=http://localhost:8080/api
+NUXT_PUBLIC_COS_BASE_URL=https://whcm-1353140174.cos.ap-nanjing.myqcloud.com
 ```
 
 ### 后端环境变量 (`backend/.env`)
@@ -232,11 +191,12 @@ NUXT_PUBLIC_API_BASE=http://localhost:8080/api
 ```env
 APP_HOST=0.0.0.0
 APP_PORT=8080
-DATABASE_URL=mysql://root:password@localhost:3306/graduation_exhibition
+DATABASE_URL=mysql://root:123456@localhost:3306/graduation_exhibition
 REDIS_URL=redis://localhost:6379
 SERVER_SALT=your-secret-salt-here  # 生产环境必须修改
 CORS_ALLOWED_ORIGINS=http://localhost:3000
 TRUST_PROXY=true
+COS_BASE_URL=https://whcm-1353140174.cos.ap-nanjing.myqcloud.com
 ```
 
 ## 开发命令

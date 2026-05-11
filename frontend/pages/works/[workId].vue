@@ -2,13 +2,13 @@
   <div class="work-detail-page min-h-screen bg-bg-page">
     <ExhibitionHeader />
 
-    <div v-if="work" class="container mx-auto px-4 py-8">
+    <div v-if="work" class="container mx-auto px-4 pt-24 pb-8">
       <!-- 面包屑 -->
       <nav class="mb-6 text-sm">
         <ol class="flex items-center gap-2 text-text-secondary">
           <li><NuxtLink to="/" class="hover:text-primary-blue transition-colors">首页</NuxtLink></li>
           <li>/</li>
-          <li><NuxtLink to="/majors" class="hover:text-primary-blue transition-colors">专业展区</NuxtLink></li>
+          <li><NuxtLink to="/#majors" class="hover:text-primary-blue transition-colors">专业展区</NuxtLink></li>
           <li>/</li>
           <li><NuxtLink :to="`/major/${work.major_code}`" class="hover:text-primary-blue transition-colors">{{ work.major_name }}</NuxtLink></li>
           <li>/</li>
@@ -23,10 +23,13 @@
           <div class="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl">
             <video
               v-if="work.video_url"
+              ref="videoRef"
               :src="work.video_url"
-              :poster="work.poster_url"
               controls
+              preload="metadata"
+              playsinline
               class="w-full h-full"
+              @loadeddata="onVideoLoaded"
             >
               您的浏览器不支持视频播放
             </video>
@@ -146,6 +149,13 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const workId = computed(() => route.params.workId as string)
+const videoRef = ref<HTMLVideoElement | null>(null)
+
+const onVideoLoaded = () => {
+  if (videoRef.value) {
+    videoRef.value.currentTime = 5
+  }
+}
 
 // 使用 API 加载作品数据
 const { fetchWorkDetail } = useWorks()
@@ -160,8 +170,9 @@ try {
   loading.value = false
 }
 
-// TODO: 从 interactions store 获取交互数据
-const interaction = ref<any>(null)
+// 从 interactions store 获取交互数据
+const interactionsStore = useInteractionsStore()
+const interaction = computed(() => interactionsStore.getInteraction(workId.value))
 
 // 分享功能
 const shareWork = async () => {
@@ -181,7 +192,7 @@ useHead({
 
 // 组件挂载时获取交互数据
 onMounted(async () => {
-  // TODO: 调用 API 获取点赞和评论数
+  await interactionsStore.fetchInteraction(workId.value)
 })
 </script>
 

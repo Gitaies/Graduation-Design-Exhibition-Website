@@ -22,7 +22,7 @@ pub async fn toggle_like(
     headers: HeaderMap,
     Json(_payload): Json<ToggleLikeRequest>,
 ) -> Json<serde_json::Value> {
-    // 获取 visitor_id 和 IP
+    // 获取 visitor_id 和 IP（同步，无阻塞）
     let visitor_id = headers
         .get("X-Visitor-Id")
         .and_then(|v| v.to_str().ok())
@@ -32,7 +32,7 @@ pub async fn toggle_like(
         .map(|ip| ip::ip_to_string(&ip))
         .unwrap_or_else(|| "unknown".to_string());
 
-    // 生成指纹
+    // 生成指纹（同步）
     let fingerprint_hash = fingerprint::generate_fingerprint(
         &work_id,
         visitor_id,
@@ -42,11 +42,17 @@ pub async fn toggle_like(
 
     let ip_hash = fingerprint::hash_ip(&ip_addr, &state.config.server_salt);
 
-    // 检查 IP 限流（60秒/20次）
-    if !rate_limit::check_ip_rate_limit(&state.redis, &ip_addr)
-        .await
-        .unwrap_or(false)
-    {
+    // 并行执行两项 Redis 限流检查，fail-open
+    let (ip_result, like_result) = tokio::join!(
+        rate_limit::check_ip_rate_limit(&state.redis, &ip_addr),
+        rate_limit::check_like_rate_limit(&state.redis, &fingerprint_hash, &work_id),
+    );
+
+    let ip_allowed = ip_result.unwrap_or_else(|e| {
+        tracing::warn!("IP 限流检查失败，放行: {:?}", e);
+        true
+    });
+    if !ip_allowed {
         return Json(json!({
             "code": 40001,
             "message": "操作太频繁，请稍后再试",
@@ -54,11 +60,11 @@ pub async fn toggle_like(
         }));
     }
 
-    // 检查指纹限流（10秒/1次）
-    if !rate_limit::check_like_rate_limit(&state.redis, &fingerprint_hash, &work_id)
-        .await
-        .unwrap_or(false)
-    {
+    let like_allowed = like_result.unwrap_or_else(|e| {
+        tracing::warn!("点赞限流检查失败，放行: {:?}", e);
+        true
+    });
+    if !like_allowed {
         return Json(json!({
             "code": 40001,
             "message": "操作太频繁，请稍后再试",
@@ -66,50 +72,45 @@ pub async fn toggle_like(
         }));
     }
 
-    // 查询是否已点赞
-    let existing: Option<(String, bool)> = sqlx::query_as(
-        "SELECT id, is_active FROM likes WHERE work_id = ? AND visitor_fingerprint_hash = ?"
+    // 原子化切换点赞状态（INSERT ... ON DUPLICATE KEY UPDATE）
+    let like_id = Uuid::new_v4().to_string();
+    if let Err(e) = sqlx::query(
+        "INSERT INTO likes (id, work_id, visitor_fingerprint_hash, ip_hash, is_active)
+         VALUES (?, ?, ?, ?, TRUE)
+         ON DUPLICATE KEY UPDATE is_active = NOT is_active, updated_at = NOW()"
     )
+    .bind(&like_id)
     .bind(&work_id)
     .bind(&fingerprint_hash)
-    .fetch_optional(&state.db)
+    .bind(&ip_hash)
+    .execute(&state.db)
     .await
-    .unwrap_or(None);
-
-    let liked: bool;
-
-    if let Some((like_id, is_active)) = existing {
-        // 已存在记录，切换状态
-        liked = !is_active;
-        let _ = sqlx::query("UPDATE likes SET is_active = ?, updated_at = NOW() WHERE id = ?")
-            .bind(liked)
-            .bind(&like_id)
-            .execute(&state.db)
-            .await;
-    } else {
-        // 新增点赞记录
-        liked = true;
-        let like_id = Uuid::new_v4().to_string();
-        let _ = sqlx::query(
-            "INSERT INTO likes (id, work_id, visitor_fingerprint_hash, ip_hash, is_active)
-             VALUES (?, ?, ?, ?, TRUE)"
-        )
-        .bind(&like_id)
-        .bind(&work_id)
-        .bind(&fingerprint_hash)
-        .bind(&ip_hash)
-        .execute(&state.db)
-        .await;
+    {
+        tracing::error!("点赞操作数据库失败: {:?}", e);
+        return Json(json!({
+            "code": 50000,
+            "message": "操作失败，请稍后重试",
+            "data": null
+        }));
     }
 
-    // 查询最新点赞数
-    let like_count: i64 = sqlx::query_scalar(
-        "SELECT COUNT(*) FROM likes WHERE work_id = ? AND is_active = TRUE"
-    )
-    .bind(&work_id)
-    .fetch_one(&state.db)
-    .await
-    .unwrap_or(0);
+    // 并行查询最终状态和点赞数（两个独立查询）
+    let (liked_result, like_count_result): (Result<bool, sqlx::Error>, Result<i64, sqlx::Error>) = tokio::join!(
+        sqlx::query_scalar(
+            "SELECT is_active FROM likes WHERE work_id = ? AND visitor_fingerprint_hash = ?"
+        )
+        .bind(&work_id)
+        .bind(&fingerprint_hash)
+        .fetch_one(&state.db),
+        sqlx::query_scalar(
+            "SELECT COUNT(*) FROM likes WHERE work_id = ? AND is_active = TRUE"
+        )
+        .bind(&work_id)
+        .fetch_one(&state.db),
+    );
+
+    let liked = liked_result.unwrap_or(true);
+    let like_count = like_count_result.unwrap_or(0);
 
     Json(json!({
         "code": 0,

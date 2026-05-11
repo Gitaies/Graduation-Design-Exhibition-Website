@@ -6,12 +6,15 @@
     <div class="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-2xl hover:shadow-primary-blue/20 transition-all duration-300 hover:-translate-y-2">
       <!-- 视频封面 -->
       <div class="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-        <img
+        <video
           v-if="work.poster_url"
           :src="work.poster_url"
-          :alt="work.title"
+          preload="metadata"
+          muted
+          playsinline
+          disablepictureinpicture
           class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          loading="lazy"
+          @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
         />
         <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
           <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,17 +119,6 @@ const formatAuthors = (authors: string[]) => {
   if (authors.length === 2) return authors.join('、')
   return `${authors[0]} 等${authors.length}人`
 }
-
-// 组件挂载时获取交互数据
-onMounted(async () => {
-  await interactionsStore.fetchInteraction(props.work.id)
-})
-onMounted(async () => {
-  // TODO: 调用 API 获取点赞和评论数
-  // const interactionsStore = useInteractionsStore()
-  // await interactionsStore.fetchSummary([props.work.id])
-  // interaction.value = interactionsStore.getInteraction(props.work.id)
-})
 </script>
 
 <style scoped>
