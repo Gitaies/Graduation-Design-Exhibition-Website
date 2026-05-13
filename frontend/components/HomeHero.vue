@@ -1,117 +1,92 @@
 <template>
-  <section id="hero" class="hero-section min-h-screen flex items-center justify-center relative overflow-hidden">
+  <section id="hero" class="hero-section min-h-screen flex items-center relative overflow-hidden">
     <!-- 背景图片 -->
     <div class="absolute inset-0 hero-background"></div>
 
     <!-- 波浪粒子画布 -->
     <canvas ref="particleCanvas" class="absolute inset-0 z-[1]"></canvas>
 
-    <!-- 装饰图标（3D 跟随鼠标） -->
-    <div class="absolute right-40 top-1/2 transform -translate-y-1/2 hero-icon-container">
-      <ClientOnly>
-        <HeroIcon3D />
-        <template #fallback>
-          <img src="~/assets/images/hero/hero_icon.png" alt="装饰" class="hero-icon" />
-        </template>
-      </ClientOnly>
-    </div>
+    <div class="container mx-auto px-4 md:px-8 lg:px-12 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between min-h-screen py-20 lg:py-24">
+        <!-- 文字内容区 -->
+        <div class="text-content max-w-2xl lg:max-w-xl xl:max-w-2xl pt-8 lg:pt-16">
+          <!-- 英文小标 -->
+          <p class="hero-eyebrow fade-in-up" data-delay="0">
+            GRADUATION EXHIBITION 2026
+          </p>
 
-    <div class="container mx-auto px-4 md:px-4 lg:px-4 relative z-10">
-      <div class="flex flex-col justify-center items-start min-h-screen py-20">
-        <!-- 文字内容 -->
-        <div class="text-content max-w-3xl">
           <!-- 主标题 -->
-          <h1 class="hero-title mb-4 fade-in-up" data-delay="0">
-            <span class="inline-block pr-3 bg-gradient-to-r from-primary-blue via-primary-cyan to-primary-blue bg-clip-text text-transparent animate-gradient relative">
-              智媒融合·创启未来
-              <!-- 装饰元素 -->
-              <span class="title-decoration">
-                <!-- 星星 -->
-                <svg class="decoration-star" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-                </svg>
-                <!-- 长斜线 -->
-                <div class="decoration-line decoration-line-long"></div>
-                <!-- 短斜线 -->
-                <div class="decoration-line decoration-line-short"></div>
-              </span>
-            </span>
+          <h1 class="hero-title fade-in-up" data-delay="100">
+            智媒融合·创启未来
           </h1>
 
           <!-- 副标题 -->
-          <p class="hero-subtitle mb-4 fade-in-up" data-delay="100">
+          <p class="hero-subtitle fade-in-up" data-delay="200">
             传媒技术学院2026届毕业设计展
           </p>
 
-          <!-- 英文标题 -->
-          <div class="hero-english mb-4 fade-in-up" data-delay="200">
-            <div class="english-line">
-              <span class="english-decoration-left"></span>
-              <p>MEDIA FUSION</p>
-            </div>
-            <p>CREATE THE FUTURE</p>
-            <p>GRADUATION EXHIBITION</p>
-            <div class="english-line">
-              <p>2026</p>
-              <span class="english-decoration-right"></span>
-            </div>
-          </div>
-
-          <!-- 描述文字 -->
-          <p class="hero-description mb-6 fade-in-up" data-delay="300">
-            本次毕业设计展以"智媒融合·创启未来"为主题，<br />
-            展示软件工程、电子信息工程、广播电视工程三大专业的<br />
-            创新成果与实践探索，揭示未来媒介技术的无限可能，<br />
-            共同迈向智能媒体新纪元的无限可能。
+          <!-- 英文标题行 -->
+          <p class="hero-english fade-in-up" data-delay="250">
+            MEDIA FUSION &nbsp;·&nbsp; CREATE THE FUTURE
           </p>
 
-          <!-- 三个专业卡片 -->
-          <div class="major-cards mb-8 fade-in-up" data-delay="400">
+          <!-- 描述文字 -->
+          <p class="hero-description fade-in-up" data-delay="300">
+            展示软件工程、电子信息工程、广播电视工程三大专业的创新成果与实践探索，揭示未来媒介技术的无限可能，共同迈向智能媒体新纪元。
+          </p>
+
+          <!-- 三个专业入口卡片 -->
+          <div class="major-cards fade-in-up" data-delay="400">
             <NuxtLink
               v-for="major in majors"
               :key="major.code"
               :to="`/major/${major.code}`"
               class="major-card group"
             >
-              <div class="major-icon">
-                <svg class="icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-              </div>
+              <span class="major-num">{{ major.number }}</span>
+              <div class="major-divider"></div>
               <div class="major-info">
-                <h3 class="major-name">{{ major.name }}</h3>
-                <p class="major-theme">{{ major.theme }}</p>
+                <span class="major-name">{{ major.name }}</span>
+                <span class="major-theme">{{ major.theme }}</span>
               </div>
+              <svg class="major-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+              </svg>
             </NuxtLink>
           </div>
 
-          <!-- 进入展区按钮 -->
+          <!-- CTA 按钮 -->
           <div class="fade-in-up" data-delay="500">
             <a
               href="#majors"
-              class="hero-button group"
+              class="hero-cta group"
               @click.prevent="scrollToSection('#majors')"
             >
-              进入展区
-              <svg class="button-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <span>进入展区</span>
+              <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
               </svg>
             </a>
           </div>
         </div>
+
+        <!-- 3D 装饰图标区 -->
+        <div class="hero-visual flex-shrink-0 mt-8 lg:mt-0 lg:ml-8">
+          <ClientOnly>
+            <HeroIcon3D />
+            <template #fallback>
+              <img src="~/assets/images/hero/hero_icon.png" alt="装饰" class="hero-icon-fallback" />
+            </template>
+          </ClientOnly>
+        </div>
       </div>
     </div>
 
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-      <div class="w-6 h-10 border-2 border-primary-blue rounded-full flex items-start justify-center p-2">
-        <div class="w-1 h-3 bg-primary-blue rounded-full animate-scroll"></div>
+    <!-- 底部滚动指示器 -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+      <div class="scroll-indicator">
+        <div class="scroll-dot"></div>
       </div>
-    </div>
-
-    <!-- 右下角装饰文字 -->
-    <div class="corner-decoration">
-      <p class="corner-year">2026</p>
-      <p class="corner-text">MEDIA TECHNOLOGY</p>
     </div>
   </section>
 </template>
@@ -148,8 +123,8 @@ onMounted(() => {
     const delay = parseInt(el.getAttribute('data-delay') || '0')
     gsap.from(el, {
       opacity: 0,
-      y: 50,
-      duration: 0.8,
+      y: 40,
+      duration: 0.7,
       delay: delay / 1000,
       ease: 'power3.out'
     })
@@ -175,308 +150,490 @@ canvas {
   pointer-events: none;
 }
 
-.hero-icon-container {
-  width: 640px;
-  height: 420px;
-  z-index: 5;
+/* ============================================
+   文字内容区
+   ============================================ */
+
+/* 英文小标 */
+.hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #1466ff;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-family: 'Inter', 'Geist', -apple-system, sans-serif;
 }
 
-.hero-icon {
+/* 主标题 */
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+}
+
+/* 副标题 */
+.hero-subtitle {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 500;
+  color: #475569;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+/* 英文标题 */
+.hero-english {
+  font-size: clamp(0.875rem, 1.4vw, 1rem);
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', 'Geist', -apple-system, sans-serif;
+}
+
+/* 描述文字 */
+.hero-description {
+  font-size: clamp(0.9rem, 1.3vw, 1rem);
+  color: #64748b;
+  line-height: 1.8;
+  max-width: 36rem;
+  margin-bottom: 2rem;
+}
+
+/* ============================================
+   专业入口卡片
+   ============================================ */
+.major-cards {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.major-card {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0.75rem 1.25rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  text-decoration: none;
+}
+
+.major-card:hover {
+  border-color: #1466ff;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 30px rgba(20, 102, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* 编号 */
+.major-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #cbd5e1;
+  letter-spacing: -0.03em;
+  font-family: 'Inter', 'Geist', -apple-system, sans-serif;
+  transition: color 0.35s ease;
+  min-width: 2rem;
+}
+
+.major-card:hover .major-num {
+  color: #1466ff;
+}
+
+/* 分隔线 */
+.major-divider {
+  width: 1px;
+  height: 1.75rem;
+  background: #e2e8f0;
+  margin: 0 0.75rem;
+  transition: background 0.35s ease;
+}
+
+.major-card:hover .major-divider {
+  background: #bfdbfe;
+}
+
+/* 信息 */
+.major-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.major-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.major-theme {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* 箭头 */
+.major-arrow {
+  width: 1rem;
+  height: 1rem;
+  color: #cbd5e1;
+  margin-left: 0.75rem;
+  transition: all 0.35s ease;
+  flex-shrink: 0;
+}
+
+.major-card:hover .major-arrow {
+  color: #1466ff;
+  transform: translateX(3px);
+}
+
+/* ============================================
+   CTA 按钮
+   ============================================ */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem 2rem;
+  background: white;
+  color: #1466ff;
+  border: 2px solid #1466ff;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-cta:hover {
+  background: #1466ff;
+  color: white;
+  box-shadow: 0 8px 30px rgba(20, 102, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.cta-arrow {
+  width: 1.125rem;
+  height: 1.125rem;
+  transition: transform 0.35s ease;
+}
+
+.hero-cta:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ============================================
+   3D 视觉区
+   ============================================ */
+.hero-visual {
+  width: clamp(345px, 40vw, 560px);
+  height: clamp(240px, 30vw, 420px);
+}
+
+.hero-icon-fallback {
   width: 100%;
   height: 100%;
   object-fit: contain;
   animation: float 8s ease-in-out infinite;
 }
 
-/* 主标题样式 */
-.hero-title {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-family: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', sans-serif;
-  font-style: italic;
-  transform: skewX(-5deg);
-}
-
-/* 标题装饰元素容器 */
-.title-decoration {
-  position: absolute;
-  right: -120px;
-  top: -20px;
-  width: 100px;
-  height: 120px;
-  pointer-events: none;
-}
-
-/* 星星装饰 */
-.decoration-star {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  color: #1466ff;
-  top: -15px;
-  left: 0;
-  animation: twinkle 2s ease-in-out infinite;
-}
-
-/* 长斜线 */
-.decoration-line-long {
-  position: absolute;
-  width: 4px;
-  height: 100px;
-  background: linear-gradient(135deg, #37c8ff 0%, rgba(55, 200, 255, 0) 100%);
-  top: 10px;
-  right: 10px;
-  transform: rotate(20deg);
-  border-radius: 2px;
-}
-
-/* 短斜线 */
-.decoration-line-short {
-  position: absolute;
-  width: 3px;
-  height: 60px;
-  background: linear-gradient(135deg, #1466ff 0%, rgba(20, 102, 255, 0) 100%);
-  bottom: -20px;
-  left: 10px;
-  transform: rotate(23deg);
-  border-radius: 2px;
-}
-
-/* 星星闪烁动画 */
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(0.9);
-  }
-}
-
-/* 副标题样式 */
-.hero-subtitle {
-  font-size: clamp(1.125rem, 2vw, 2rem);
-  font-weight: 500;
-  color: oklch(0.3 0.01 250);
-  letter-spacing: 0.01em;
-}
-
-/* 英文标题样式 */
-.hero-english {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  color: oklch(0.55 0.005 250);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  line-height: 1.6;
-  font-family: 'Inter', -apple-system, sans-serif;
-}
-
-.english-line {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.english-decoration-left {
-  width: 15px;
-  height: 3px;
-  background: linear-gradient(80deg, transparent 0%, #37c8ff 100%);
-  transform: rotate(-65deg);
-}
-
-.english-decoration-right {
-  width: 20px;
-  height: 3px;
-  background: linear-gradient(90deg, #1466ff 0%, transparent 100%);
-  transform: rotate(-65deg);
-}
-
-/* 描述文字样式 */
-.hero-description {
-  font-size: clamp(0.875rem, 1.5vw, 1rem);
-  color: oklch(0.4 0.008 250);
-  line-height: 1.75;
-  max-width: 38rem;
-}
-
-/* 专业卡片容器 */
-.major-cards {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-/* 专业卡片 */
-.major-card {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.125rem;
-  border: 2px solid rgba(20, 102, 255, 0.3);
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.major-card:hover {
-  transform: translateY(-4px);
-  border-color: #1466ff;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 24px rgba(20, 102, 255, 0.2);
-}
-
-/* 专业图标 */
-.major-icon {
-  width: 3rem;
-  height: 3rem;
-  border: 2px solid #1466ff;
-  border-radius: 0.625rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-}
-
-.major-card:hover .major-icon {
-  background: #1466ff;
-  box-shadow: 0 8px 24px rgba(20, 102, 255, 0.3);
-}
-
-.icon-svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #1466ff;
-  transition: color 0.3s ease;
-}
-
-.major-card:hover .icon-svg {
-  color: white;
-}
-
-/* 专业信息 */
-.major-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.major-name {
-  font-size: 1rem;
-  font-weight: 700;
-  color: oklch(0.15 0.01 250);
-  letter-spacing: -0.01em;
-}
-
-.major-theme {
-  font-size: 0.875rem;
-  color: #1466ff;
-  font-weight: 500;
-}
-
-/* 进入展区按钮 */
-.hero-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.875rem 2rem;
-  background: #1466ff;
-  color: white;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 16px rgba(20, 102, 255, 0.2);
-}
-
-.hero-button:hover {
-  background: #37c8ff;
-  transform: scale(1.05);
-  box-shadow: 0 12px 32px rgba(55, 200, 255, 0.4);
-}
-
-.button-arrow {
-  width: 1.25rem;
-  height: 1.25rem;
-  transition: transform 0.3s ease;
-}
-
-.hero-button:hover .button-arrow {
-  transform: translateX(0.25rem);
-}
-
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+/* ============================================
+   底部滚动指示器
+   ============================================ */
+.scroll-indicator {
+  width: 1.5rem;
+  height: 2.5rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 9999px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+.scroll-dot {
+  width: 0.25rem;
+  height: 0.5rem;
+  background: #94a3b8;
+  border-radius: 9999px;
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(8px); opacity: 1; }
+  100% { transform: translateY(16px); opacity: 0; }
+}
+
+/* ============================================
+   响应式
+   ============================================ */
+
+/* 平板横屏 — 缩小视觉区 */
+@media (max-width: 1024px) {
+  .hero-section .flex-col {
+    padding-top: 6rem;
+    padding-bottom: 5rem;
   }
-  50% {
-    transform: translateY(-20px);
+
+  .hero-visual {
+    width: 280px;
+    height: 210px;
   }
-}
 
-@keyframes gradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.animate-gradient {
-  background-size: 200% auto;
-  animation: gradient 3s ease infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(12px); opacity: 0; }
-}
-
-.animate-scroll {
-  animation: scroll 1.5s ease-in-out infinite;
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
   .major-cards {
+    gap: 0.6rem;
+  }
+
+  .major-card {
+    padding: 0.65rem 1rem;
+  }
+}
+
+/* 平板竖屏 — 保持左右但缩小间距 */
+@media (max-width: 900px) {
+  .hero-visual {
+    width: 240px;
+    height: 180px;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+}
+
+/* 手机横屏 / 小平板 — 堆叠布局 */
+@media (max-width: 768px) {
+  .hero-section .flex-col {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-visual {
+    width: 280px;
+    height: 210px;
+    margin-top: 0.5rem;
+  }
+
+  .hero-section .lg\:flex-row {
+    flex-direction: column !important;
+  }
+
+  .hero-section .lg\:items-start {
+    align-items: center !important;
+  }
+
+  .text-content {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero-description {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  /* 三张入口卡片保持一行 */
+  .major-cards {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .major-card {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    padding: 0.6rem 0.6rem;
+  }
+
+  .hero-cta {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-section .container .flex-col.lg\:flex-row > div:first-child {
+    display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+  }
+}
+
+/* 大屏手机 — 首屏撑满 */
+@media (max-width: 640px) {
+  .hero-section {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
   }
 
-  .hero-description br {
+  .hero-section .flex-col {
+    padding-top: 4rem;
+    padding-bottom: 1.5rem;
+    min-height: auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .hero-english {
+    font-size: 0.68rem;
+    text-align: center;
+  }
+
+  .hero-description {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    padding: 0 0.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* 3D 图标 */
+  .hero-visual {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin-top: 0.5rem;
+  }
+
+  /* 三张入口卡片保持一行 */
+  .major-cards {
+    flex-direction: row;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .major-card {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    padding: 0.6rem 0.5rem;
+    border-radius: 0.6rem;
+  }
+
+  .major-num {
+    font-size: 1.1rem;
+    min-width: auto;
+  }
+
+  .major-name {
+    font-size: 0.78rem;
+  }
+
+  .major-theme {
+    font-size: 0.7rem;
+  }
+
+  .major-divider {
+    margin: 0 0.4rem;
+    height: 1.25rem;
+  }
+
+  .major-arrow {
     display: none;
   }
 
-  .corner-decoration {
+  .hero-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .scroll-indicator {
     display: none;
   }
 }
 
-/* 右下角装饰文字 */
-.corner-decoration {
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  text-align: right;
-  z-index: 10;
-}
+/* 小屏手机 */
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
 
-.corner-year {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: oklch(41.225% 0.00216 248.372);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
-}
+  .hero-section .flex-col {
+    padding-top: 3.25rem;
+    padding-bottom: 1.25rem;
+  }
 
-.corner-text {
-  font-size: 0.625rem;
-  font-weight: 600;
-  color: oklch(41.225% 0.00216 248.372);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-family: 'Inter', -apple-system, sans-serif;
+  .hero-title {
+    font-size: clamp(1.5rem, 7vw, 1.9rem);
+  }
+
+  .hero-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .hero-description {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  .hero-visual {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin-top: 2rem;
+  }
+
+  .major-cards {
+    gap: 0.35rem;
+  }
+
+  .major-card {
+    padding: 0.55rem 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .major-num {
+    font-size: 0.95rem;
+  }
+
+  .major-name {
+    font-size: 0.7rem;
+  }
+
+  .major-theme {
+    font-size: 0.6rem;
+    white-space: nowrap;
+  }
+
+  .major-divider {
+    margin: 0 0.25rem;
+    height: 1.1rem;
+  }
 }
 </style>

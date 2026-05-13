@@ -461,14 +461,59 @@ useHead({
   overflow: hidden;
 }
 
+@media (max-width: 1024px) {
+  .ranking-card-top {
+    gap: 1rem;
+  }
+
+  .ranking-badge {
+    font-size: 2rem;
+  }
+
+  .ranking-content {
+    gap: 1rem;
+  }
+
+  .ranking-poster {
+    width: 140px;
+    height: 80px;
+  }
+}
+
 @media (max-width: 768px) {
+  .ranking-page h1 {
+    font-size: 2rem;
+  }
+
+  .ranking-page h1 span {
+    font-size: 1rem;
+  }
+
+  .tab-link {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+  }
+
+  .time-tab {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
   .ranking-card-top {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .ranking-content {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .ranking-poster {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    border-radius: 0.75rem;
   }
 
   .ranking-actions {
@@ -478,6 +523,19 @@ useHead({
     align-items: center;
   }
 
+  .like-count {
+    flex-direction: row;
+  }
+
+  .like-count span {
+    font-size: 1.5rem;
+  }
+
+  .view-button {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+  }
+
   .ranking-card-small {
     grid-template-columns: auto 1fr auto;
     gap: 0.75rem;
@@ -485,6 +543,113 @@ useHead({
 
   .ranking-poster-small {
     display: none;
+  }
+
+  .ranking-number-small {
+    width: 2rem;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .ranking-page .container {
+    padding-top: 1.5rem;
+  }
+
+  .ranking-page h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ranking-page h1 span {
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+    display: inline;
+  }
+
+  .tab-link {
+    font-size: 0.85rem;
+    padding: 0.6rem 0;
+  }
+
+  .flex.items-center.gap-8.mb-8 {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .flex.gap-4.mb-8 {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .time-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 0.375rem;
+  }
+
+  .ranking-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .ranking-badge {
+    font-size: 1.5rem;
+  }
+
+  .ranking-card-top h3 {
+    font-size: 1.1rem;
+  }
+
+  .major-tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .ranking-card-small {
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .like-count-small {
+    display: none;
+  }
+
+  .ranking-number-small {
+    width: 1.75rem;
+    font-size: 1.1rem;
+  }
+
+  .ranking-info-small h3 {
+    font-size: 0.95rem;
+  }
+
+  .major-tag-small {
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ranking-page h1 {
+    font-size: 1.25rem;
+  }
+
+  .time-tab {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .ranking-card-top h3 {
+    font-size: 1rem;
+  }
+
+  .ranking-info p {
+    font-size: 0.78rem;
+  }
+
+  .ranking-info-small h3 {
+    font-size: 0.85rem;
   }
 }
 </style>

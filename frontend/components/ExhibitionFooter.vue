@@ -341,34 +341,211 @@ onMounted(() => {
 }
 
 /* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .footer-grid {
+    gap: clamp(20px, 3vw, 32px);
+  }
+
+  .footer-geo {
+    right: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .site-footer {
-    padding: 56px 0 24px;
+    padding: 40px 0 20px;
+    background-size: cover;
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+
+  /* 标识区 — 紧凑横排 */
+  .footer-identity {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid oklch(0.88 0.006 255);
   }
 
   .footer-year {
-    font-size: 5rem;
-    line-height: 0.9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: oklch(0.55 0.20 265);
+    margin-bottom: 0;
+    margin-right: 0.25rem;
+  }
+
+  .footer-college {
+    font-size: 0.95rem;
+  }
+
+  .footer-exhibition {
+    font-size: 0.82rem;
+  }
+
+  .footer-theme {
+    font-size: 0.78rem;
+    margin-top: 0;
+    margin-left: 0.25rem;
+  }
+
+  /* 专业 + 联系 — 紧凑横排 */
+  .footer-majors,
+  .footer-contact {
+    padding: 0;
+    margin-bottom: 12px;
+  }
+
+  .footer-label {
+    font-size: 0.62rem;
+    margin-bottom: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-label-en {
+    display: none;
+  }
+
+  .footer-major-list {
+    flex-direction: row;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .footer-major-item {
+    gap: 4px;
+  }
+
+  .footer-major-item:not(:last-child)::after {
+    content: '/';
+    color: oklch(0.7 0.01 255);
+    margin: 0 6px;
+    font-size: 0.7rem;
+  }
+
+  .footer-major-name {
+    font-size: 0.78rem;
+  }
+
+  .footer-major-theme {
+    display: none;
+  }
+
+  .footer-contact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .footer-contact .footer-label {
+    margin-bottom: 0;
+    margin-right: 8px;
+  }
+
+  .footer-info-item {
+    font-size: 0.75rem;
+  }
+
+  .footer-info-item:first-of-type {
+    margin-right: 12px;
+  }
+
+  /* 底栏 — 单行 */
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 12px;
+    gap: 4px;
+  }
+
+  .footer-copy {
+    font-size: 0.68rem;
+  }
+
+  .footer-rights {
+    font-size: 0.65rem;
+  }
+
+  /* 装饰 — 缩小 */
+  .footer-geo {
+    width: 60px;
+    height: 60px;
+    bottom: 8px;
+    right: 4px;
+    opacity: 0.5;
+  }
+
+  .footer-pattern {
+    opacity: 0.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 28px 0 16px;
+  }
+
+  .footer-identity {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    gap: 0.35rem;
+  }
+
+  .footer-year {
+    font-size: 1.25rem;
+  }
+
+  .footer-college {
+    font-size: 0.85rem;
+  }
+
+  .footer-exhibition,
+  .footer-theme {
+    font-size: 0.7rem;
+  }
+
+  .footer-majors {
     margin-bottom: 8px;
+  }
+
+  .footer-major-name {
+    font-size: 0.7rem;
+  }
+
+  .footer-info-item {
+    font-size: 0.68rem;
   }
 
   .footer-bottom {
     flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
+    gap: 2px;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px;
+  }
+
+  .footer-copy {
+    font-size: 0.62rem;
+  }
+
+  .footer-rights {
+    font-size: 0.6rem;
   }
 
   .footer-geo {
-    width: 100px;
-    height: 100px;
-    bottom: 32px;
-    right: 1rem;
+    display: none;
   }
 }
 </style>

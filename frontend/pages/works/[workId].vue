@@ -30,6 +30,7 @@
               playsinline
               class="w-full h-full"
               @loadeddata="onVideoLoaded"
+              @play="onVideoPlay"
             >
               您的浏览器不支持视频播放
             </video>
@@ -150,10 +151,19 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const workId = computed(() => route.params.workId as string)
 const videoRef = ref<HTMLVideoElement | null>(null)
+const posterSet = ref(false)
 
 const onVideoLoaded = () => {
   if (videoRef.value) {
     videoRef.value.currentTime = 5
+    posterSet.value = true
+  }
+}
+
+const onVideoPlay = () => {
+  if (posterSet.value && videoRef.value) {
+    videoRef.value.currentTime = 0
+    posterSet.value = false
   }
 }
 
@@ -205,5 +215,175 @@ onMounted(async () => {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   响应式
+   ============================================ */
+
+/* 平板横屏 —— 保持双栏但缩小间距 */
+@media (max-width: 1024px) {
+  .work-detail-page .grid {
+    gap: 1.5rem;
+  }
+
+  .work-detail-page .sticky {
+    position: static;
+  }
+}
+
+/* 平板竖屏 —— 切换为单栏 */
+@media (max-width: 768px) {
+  .work-detail-page .container {
+    padding-top: 5rem;
+  }
+
+  .work-detail-page .grid.grid-cols-1.lg\\:grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .work-detail-page .lg\\:col-span-2 {
+    grid-column: span 1;
+  }
+
+  .work-detail-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .work-detail-page .text-3xl {
+    font-size: 1.35rem;
+  }
+
+  .work-detail-page .md\\:text-4xl {
+    font-size: 1.5rem;
+  }
+
+  /* 面包屑 */
+  .work-detail-page nav.mb-6 {
+    font-size: 0.78rem;
+    margin-bottom: 1rem;
+  }
+
+  /* 视频 */
+  .work-detail-page .aspect-video {
+    border-radius: 1rem;
+  }
+
+  /* 信息卡片 */
+  .work-detail-page .rounded-2xl {
+    border-radius: 1rem;
+    padding: 1.25rem;
+  }
+
+  /* 标签 */
+  .work-detail-page .flex.flex-wrap.gap-2 {
+    gap: 0.4rem;
+  }
+
+  .work-detail-page .px-3.py-1\\.5 {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  /* 作者信息 */
+  .work-detail-page .grid.grid-cols-1.md\\:grid-cols-2 {
+    gap: 0.75rem;
+  }
+
+  /* 右侧边栏 —— 静态定位 */
+  .work-detail-page .sticky {
+    position: static;
+  }
+}
+
+/* 大屏手机 */
+@media (max-width: 640px) {
+  .work-detail-page .container {
+    padding-top: 4rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .work-detail-page nav.mb-6 ol {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+  }
+
+  .work-detail-page h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .work-detail-page .rounded-2xl {
+    padding: 1rem;
+  }
+
+  .work-detail-page .px-3.py-1\\.5 {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.72rem;
+  }
+
+  .work-detail-page .text-lg.font-bold {
+    font-size: 1rem;
+  }
+
+  .work-detail-page .text-text-secondary.leading-relaxed {
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .work-detail-page .text-sm.text-text-light {
+    font-size: 0.75rem;
+  }
+
+  .work-detail-page .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  /* 统计数字 */
+  .work-detail-page .text-2xl.font-bold {
+    font-size: 1.5rem;
+  }
+
+  /* 交互卡片 */
+  .work-detail-page .space-y-6 > .bg-white\/80 {
+    padding: 1rem;
+  }
+}
+
+/* 小屏手机 */
+@media (max-width: 480px) {
+  .work-detail-page .container {
+    padding-top: 3.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .work-detail-page h1 {
+    font-size: 1.15rem;
+  }
+
+  .work-detail-page .rounded-2xl {
+    padding: 0.875rem;
+    border-radius: 0.75rem;
+  }
+
+  .work-detail-page .aspect-video {
+    border-radius: 0.75rem;
+  }
+
+  .work-detail-page .px-3.py-1\\.5 {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.68rem;
+    border-radius: 0.4rem;
+  }
+
+  .work-detail-page .text-text-secondary.leading-relaxed {
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
 }
 </style>

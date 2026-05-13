@@ -825,9 +825,38 @@ useHead({
 .major-hero-broadcast .geo-vert-text { color: oklch(0.52 0.12 220 / 0.3); }
 
 /* 响应式 */
+@media (max-width: 1024px) {
+  .hero-body {
+    gap: 1.5rem;
+  }
+
+  .hero-index-num {
+    font-size: clamp(4rem, 8vw, 7rem);
+  }
+
+  .hero-right {
+    min-height: 280px;
+  }
+
+  .geo-ring {
+    width: 220px;
+    height: 220px;
+  }
+
+  .geo-ring-inner {
+    width: 140px;
+    height: 140px;
+  }
+}
+
 @media (max-width: 768px) {
   .major-hero {
     padding: 5rem 0 3rem;
+  }
+
+  .hero-breadcrumb {
+    margin-bottom: 2rem;
+    font-size: 0.72rem;
   }
 
   .hero-body {
@@ -869,6 +898,97 @@ useHead({
 
   .hero-right {
     display: none;
+  }
+
+  .mb-8.flex.flex-wrap {
+    gap: 0.5rem;
+  }
+
+  button.px-6.py-2\\.5 {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .major-hero {
+    padding: 4rem 0 2rem;
+  }
+
+  .hero-breadcrumb {
+    font-size: 0.68rem;
+    gap: 0.35rem;
+  }
+
+  .hero-index-num {
+    font-size: 2.75rem;
+  }
+
+  .hero-name-main {
+    font-size: 1.6rem;
+  }
+
+  .hero-theme {
+    font-size: 1.25rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .hero-desc {
+    font-size: 0.82rem;
+  }
+
+  .hero-theme-prefix {
+    font-size: 1.2rem;
+  }
+
+  .grid.grid-cols-1 {
+    gap: 1rem;
+  }
+
+  .mt-12.flex.justify-center button {
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .w-10.h-10 {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .major-hero {
+    padding: 3.5rem 0 1.5rem;
+  }
+
+  .hero-index-num {
+    font-size: 2.25rem;
+  }
+
+  .hero-name-main {
+    font-size: 1.35rem;
+  }
+
+  .hero-theme {
+    font-size: 1.1rem;
+  }
+
+  .hero-label {
+    font-size: 0.6rem;
+  }
+
+  .hero-label-dash {
+    width: 1.5rem;
+  }
+
+  button.px-6.py-2\\.5 {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+    border-radius: 9999px;
   }
 }
 </style>

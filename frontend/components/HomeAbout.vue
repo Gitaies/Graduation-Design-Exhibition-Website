@@ -475,16 +475,36 @@ import { aboutMajors } from '~/constants/majors'
   }
 
   .about-stats {
-    gap: 1rem;
-    padding: 1.5rem 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.25rem;
+    padding: 1rem 0;
+    flex-wrap: nowrap;
+  }
+
+  .about-stat {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.25rem;
   }
 
   .about-stat-num {
-    font-size: 2rem;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .about-stat-plus {
+    font-size: 0.55em;
   }
 
   .about-stat-label {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    white-space: nowrap;
+  }
+
+  .about-stat-divider {
+    height: 1.5rem;
   }
 }
 </style>

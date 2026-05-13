@@ -132,4 +132,67 @@ const formatAuthors = (authors: string[]) => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 768px) {
+  .work-card .p-5 {
+    padding: 0.875rem;
+  }
+
+  .work-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .work-card .text-sm.text-text-secondary {
+    font-size: 0.8rem;
+  }
+
+  .work-card .px-2\.5 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .work-card .rounded-2xl {
+    border-radius: 1rem;
+  }
+
+  .work-card .p-5 {
+    padding: 0.75rem;
+  }
+
+  .work-card h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .work-card .text-sm.text-text-secondary {
+    font-size: 0.72rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .work-card .flex.flex-wrap.gap-2 {
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .work-card .w-16.h-16 {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .work-card .w-8.h-8 {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .work-card .bottom-3 {
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+}
 </style>

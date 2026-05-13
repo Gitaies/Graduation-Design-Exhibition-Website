@@ -25,11 +25,34 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080/api'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
+    }
+  },
+
+  vite: {
+    server: {
+      allowedHosts: ['localhost', '192.168.0.16', 'frontend', '.local']
     }
   },
 
   nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/ranking',
+        '/major/software',
+        '/major/electronic',
+        '/major/broadcast'
+      ]
+    },
+    hooks: {
+      'prerender:routes'(routes: Set<string>) {
+        for (let i = 1; i <= 33; i++) {
+          routes.add(`/works/w${String(i).padStart(3, '0')}`)
+        }
+      }
+    },
     devProxy: {
       '/static': {
         target: 'http://localhost:8080/static',

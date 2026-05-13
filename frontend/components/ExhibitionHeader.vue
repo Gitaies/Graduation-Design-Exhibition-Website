@@ -1,6 +1,6 @@
 <template>
   <header
-    :class="['fixed top-0 left-0 right-0 z-50 nav-header', { 'scrolled': isScrolled }]"
+    :class="['fixed top-0 left-0 right-0 z-50 nav-header', { 'scrolled': isScrolled, 'menu-open': isMenuOpen }]"
     @mouseenter="onHeaderHover"
     @mouseleave="onHeaderLeave"
   >
@@ -20,7 +20,7 @@
           </div>
         </NuxtLink>
 
-        <!-- 导航菜单 -->
+        <!-- 桌面端导航菜单 -->
         <nav class="hidden md:flex items-center space-x-1">
           <a
             v-for="item in navItems"
@@ -37,34 +37,46 @@
         </nav>
 
         <!-- 移动端菜单按钮 -->
-        <button @click="toggleMenu" class="md:hidden p-2 text-gray-700 hover:text-primary-blue transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
+        <button
+          @click="toggleMenu"
+          class="md:hidden relative w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary-blue transition-colors"
+          :aria-label="isMenuOpen ? '关闭菜单' : '打开菜单'"
+        >
+          <span class="hamburger-box relative w-5 h-4">
+            <span :class="['hamburger-line', { 'open': isMenuOpen }]"></span>
+            <span :class="['hamburger-line', { 'open': isMenuOpen }]"></span>
+            <span :class="['hamburger-line', { 'open': isMenuOpen }]"></span>
+          </span>
         </button>
       </div>
     </div>
 
     <!-- 移动端菜单 -->
-    <div v-if="isMenuOpen" class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200">
-      <nav class="container mx-auto px-4 py-4 space-y-3">
-        <a
-          v-for="item in navItems"
-          :key="item.path"
-          :href="item.path"
-          class="block py-2 text-gray-600 hover:text-primary-blue transition-colors"
-          @click.prevent="scrollToSection(item.path)"
-        >
-          {{ item.label }}
-        </a>
-      </nav>
-    </div>
+    <Transition name="mobile-menu">
+      <div v-if="isMenuOpen" class="md:hidden mobile-menu-panel">
+        <nav class="container mx-auto px-4 py-4 space-y-1">
+          <a
+            v-for="item in navItems"
+            :key="item.path"
+            :href="item.path"
+            class="mobile-nav-link"
+            @click.prevent="scrollToSection(item.path)"
+          >
+            {{ item.label }}
+          </a>
+        </nav>
+      </div>
+    </Transition>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { gsap } from 'gsap'
+
+const route = useRoute()
+const router = useRouter()
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
@@ -85,11 +97,20 @@ const closeMenu = () => {
 }
 
 const scrollToSection = (path: string) => {
+  closeMenu()
+
+  // 非首页 → 先跳转到首页，再滚动到对应区块
+  if (route.path !== '/') {
+    router.push({ path: '/', hash: path })
+    return
+  }
+
+  // 已在首页 → 直接滚动
   const sectionId = path.replace('#', '')
   const element = document.getElementById(sectionId)
 
   if (element) {
-    const headerHeight = 80 // 导航栏高度
+    const headerHeight = 80
     const elementPosition = element.getBoundingClientRect().top
     const offsetPosition = elementPosition + window.pageYOffset - headerHeight
 
@@ -98,9 +119,16 @@ const scrollToSection = (path: string) => {
       behavior: 'smooth'
     })
   }
-
-  closeMenu()
 }
+
+// 移动端菜单打开时锁定 body 滚动
+watch(isMenuOpen, (open) => {
+  if (open) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
+})
 
 // 监听滚动事件
 const handleScroll = () => {
@@ -116,14 +144,31 @@ const handleScroll = () => {
       ease: 'power2.out'
     })
   }
+
+  // 移动端：滚动时关闭菜单
+  if (isMenuOpen.value && scrolled) {
+    closeMenu()
+  }
+}
+
+// 监听窗口大小变化，关闭移动端菜单
+const handleResize = () => {
+  if (window.innerWidth >= 768 && isMenuOpen.value) {
+    closeMenu()
+  }
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', handleResize)
+  // 初始检查滚动状态
+  handleScroll()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleResize)
+  document.body.style.overflow = ''
 })
 
 const onHeaderHover = () => {
@@ -140,7 +185,7 @@ const onHeaderHover = () => {
 }
 
 const onHeaderLeave = () => {
-  if (!isScrolled.value) {
+  if (!isScrolled.value && !isMenuOpen.value) {
     const bg = document.querySelector('.nav-header-bg') as HTMLElement
     if (bg) {
       gsap.to(bg, {
@@ -181,7 +226,6 @@ const onNavLeave = (event: MouseEvent) => {
 
 <style scoped>
 .nav-header {
-  overflow: hidden;
   background: transparent;
 }
 
@@ -197,6 +241,24 @@ const onNavLeave = (event: MouseEvent) => {
   transform-origin: top;
   z-index: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 移动端始终显示背景（无 hover 能力） */
+@media (max-width: 767px) {
+  .nav-header-bg {
+    transform: scaleY(0.92);
+    background: rgba(255, 255, 255, 0.88);
+  }
+
+  .nav-header.scrolled .nav-header-bg {
+    transform: scaleY(1);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .nav-header.menu-open .nav-header-bg {
+    transform: scaleY(1);
+    background: rgba(255, 255, 255, 0.98);
+  }
 }
 
 .nav-link {
@@ -230,5 +292,133 @@ const onNavLeave = (event: MouseEvent) => {
   transform: translateX(-50%) scaleX(0);
   transform-origin: center;
   z-index: 1;
+}
+
+/* ============================================
+   汉堡图标
+   ============================================ */
+.hamburger-box {
+  display: block;
+}
+
+.hamburger-line {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-line:nth-child(1) {
+  top: 0;
+}
+
+.hamburger-line:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hamburger-line:nth-child(3) {
+  bottom: 0;
+}
+
+/* 汉堡变 X */
+.hamburger-line.open:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.hamburger-line.open:nth-child(2) {
+  opacity: 0;
+  transform: translateY(-50%) scaleX(0);
+}
+
+.hamburger-line.open:nth-child(3) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+/* ============================================
+   移动端菜单面板
+   ============================================ */
+.mobile-menu-panel {
+  position: relative;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 0.875rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  color: #1466ff;
+  background: rgba(20, 102, 255, 0.06);
+  padding-left: 0.75rem;
+}
+
+/* ============================================
+   移动端菜单过渡动画
+   ============================================ */
+.mobile-menu-enter-active {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mobile-menu-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.mobile-menu-enter-from {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 1024px) {
+  .nav-link {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-header .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .nav-header .flex.items-center {
+    height: 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-header .flex.items-center {
+    height: 3rem;
+  }
+
+  .nav-header img {
+    height: 2.25rem;
+  }
 }
 </style>

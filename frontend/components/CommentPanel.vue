@@ -238,4 +238,90 @@ onMounted(async () => {
     transform: translateY(0);
   }
 }
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 768px) {
+  .comment-panel {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .comment-panel h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .comment-panel textarea {
+    font-size: 0.9rem;
+    padding: 0.75rem 0.875rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .comment-panel {
+    padding: 1rem;
+  }
+
+  .comment-panel h2 {
+    font-size: 1rem;
+  }
+
+  .comment-panel h2 svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .comment-panel textarea {
+    font-size: 0.85rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .comment-panel .flex.items-center.justify-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .comment-panel button {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .comment-item {
+    padding: 0.75rem;
+  }
+
+  .comment-item .w-10.h-10 {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.7rem;
+  }
+
+  .comment-item .font-medium {
+    font-size: 0.85rem;
+  }
+
+  .comment-item .text-sm.text-text-light {
+    font-size: 0.7rem;
+  }
+
+  .comment-item .text-text-secondary {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .comment-panel {
+    padding: 0.75rem;
+  }
+
+  .comment-panel textarea {
+    font-size: 0.8rem;
+    rows: 2;
+  }
+}
 </style>

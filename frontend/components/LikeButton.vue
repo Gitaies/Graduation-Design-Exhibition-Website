@@ -112,4 +112,34 @@ const toggleLike = async () => {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 640px) {
+  .like-button {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .like-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .like-button .text-lg {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .like-button {
+    padding: 0.65rem 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .like-button .text-lg {
+    font-size: 0.875rem;
+  }
+}
 </style>

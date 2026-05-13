@@ -30,14 +30,18 @@ async fn main() {
         .await
         .expect("Failed to create database pool");
 
-    // 初始化 Redis 连接
+    // 初始化 Redis 连接（启动时建立，后续请求复用，避免每次请求重建连接）
     let redis_client = redis::Client::open(config.redis_url.clone())
         .expect("Failed to create Redis client");
+    let redis_conn = redis_client
+        .get_multiplexed_async_connection()
+        .await
+        .expect("Failed to create Redis connection");
 
     // 创建应用状态
     let app_state = AppState {
         db: db_pool,
-        redis: redis_client,
+        redis: redis_conn,
         config: config.clone(),
     };
 
@@ -77,6 +81,6 @@ async fn main() {
 #[derive(Clone)]
 pub struct AppState {
     pub db: sqlx::MySqlPool,
-    pub redis: redis::Client,
+    pub redis: redis::aio::MultiplexedConnection,
     pub config: Config,
 }
