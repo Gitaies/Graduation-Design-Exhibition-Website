@@ -94,13 +94,12 @@
             class="podium-card podium-card--second"
           >
             <div class="podium-poster">
-              <video
+              <img
                 v-if="getWork(topThree[1].work_id)?.posterUrl"
                 :src="getWork(topThree[1].work_id)?.posterUrl"
-                preload="metadata"
-                muted playsinline disablepictureinpicture
+                :alt="getWork(topThree[1].work_id)?.title"
+                loading="lazy"
                 class="podium-video"
-                @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
               />
               <div class="podium-rank-strip">
                 <span class="podium-rank-num">02</span>
@@ -128,13 +127,12 @@
             class="podium-card podium-card--first"
           >
             <div class="podium-poster">
-              <video
+              <img
                 v-if="getWork(topThree[0].work_id)?.posterUrl"
                 :src="getWork(topThree[0].work_id)?.posterUrl"
-                preload="metadata"
-                muted playsinline disablepictureinpicture
+                :alt="getWork(topThree[0].work_id)?.title"
+                loading="lazy"
                 class="podium-video"
-                @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
               />
               <div class="podium-rank-strip">
                 <span class="podium-rank-num">01</span>
@@ -162,13 +160,12 @@
             class="podium-card podium-card--third"
           >
             <div class="podium-poster">
-              <video
+              <img
                 v-if="getWork(topThree[2].work_id)?.posterUrl"
                 :src="getWork(topThree[2].work_id)?.posterUrl"
-                preload="metadata"
-                muted playsinline disablepictureinpicture
+                :alt="getWork(topThree[2].work_id)?.title"
+                loading="lazy"
                 class="podium-video"
-                @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
               />
               <div class="podium-rank-strip">
                 <span class="podium-rank-num">03</span>
@@ -205,13 +202,12 @@
           >
             <span class="rest-rank-num">{{ index + 4 }}</span>
             <div class="rest-poster">
-              <video
+              <img
                 v-if="getWork(item.work_id)?.posterUrl"
                 :src="getWork(item.work_id)?.posterUrl"
-                preload="metadata"
-                muted playsinline disablepictureinpicture
+                :alt="getWork(item.work_id)?.title"
+                loading="lazy"
                 class="rest-poster-video"
-                @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
               />
               <div class="rest-poster-play">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -1077,7 +1073,8 @@ onUnmounted(() => {
   }
 
   .ranking-title-decor .title-ornament {
-    display: none;
+    width: clamp(2.5rem, 5vw, 4rem);
+    height: 0.9rem;
   }
 
   .ranking-tabs-row {
@@ -1086,7 +1083,7 @@ onUnmounted(() => {
   }
 }
 
-/* 平板竖屏 / 大手机 — 紧凑三列颁奖台 */
+/* 平板竖屏 / 大手机 — 紧凑三列颁奖台，保留缩略图 */
 @media (max-width: 768px) {
   .ranking-section {
     padding: 3rem 0;
@@ -1115,10 +1112,10 @@ onUnmounted(() => {
     font-size: 0.78rem;
   }
 
-  /* 紧凑三列：横排，极简信息 */
+  /* 紧凑三列：横排，保留缩略海报 + 极简信息 — 底部对齐，错落高度 */
   .podium {
     flex-direction: row;
-    align-items: stretch;
+    align-items: flex-end;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
   }
@@ -1128,46 +1125,65 @@ onUnmounted(() => {
     max-width: none;
     border-radius: 0.65rem;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
     text-align: center;
-    padding: 0.65rem 0.4rem;
+    padding: 0;
     min-height: 0;
   }
 
   .podium-card--second {
     order: 1;
     margin-bottom: 0;
+    flex: 0.85;
   }
   .podium-card--first {
     order: 2;
     margin-bottom: 0;
     max-width: none;
+    flex: 1.3;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     border: 2px solid oklch(0.55 0.20 265 / 0.35);
     border-radius: 0.75rem;
-    padding: 0.75rem 0.4rem;
   }
   .podium-card--third {
     order: 3;
     margin-bottom: 0;
+    flex: 0.85;
   }
 
-  /* 隐藏海报视频，只保留排名数字 */
+  /* 海报缩略图 — 保留可见，2/3名海报缩小形成错落高度 */
   .podium-poster {
-    display: none;
+    display: block;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem 0.5rem 0 0;
+    overflow: hidden;
+  }
+  .podium-card--second .podium-poster {
+    aspect-ratio: 16 / 11;
+  }
+  .podium-card--third .podium-poster {
+    aspect-ratio: 16 / 14;
+  }
+  .podium-card--first .podium-poster {
+    aspect-ratio: 16 / 9;
   }
 
-  /* 排名数字 — 纯排版展示 */
+  .podium-rank-strip {
+    padding: 0.75rem 0.5rem 0.5rem;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0) 100%);
+  }
+
+  /* 排名数字 — 紧凑 */
   .podium-rank-num {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 900;
     display: block;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0;
     line-height: 1;
   }
   .podium-card--first .podium-rank-num {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #dc2626;
   }
   .podium-card--second .podium-rank-num {
@@ -1179,47 +1195,47 @@ onUnmounted(() => {
 
   /* 信息区 — 紧凑居中 */
   .podium-info {
-    padding: 0;
-    gap: 0.15rem;
+    padding: 0.45rem 0.4rem 0.5rem;
+    gap: 0.1rem;
     align-items: center;
   }
   .podium-card--first .podium-info {
-    padding: 0;
-    gap: 0.2rem;
+    padding: 0.5rem 0.4rem 0.55rem;
+    gap: 0.15rem;
   }
 
   .podium-major {
-    font-size: 0.58rem;
-    padding: 0.08rem 0.4rem;
+    font-size: 0.55rem;
+    padding: 0.06rem 0.35rem;
   }
   .podium-card--first .podium-major {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
   }
 
   .podium-title {
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     -webkit-line-clamp: 2;
     text-align: center;
     line-height: 1.3;
   }
   .podium-card--first .podium-title {
-    font-size: 0.78rem;
+    font-size: 0.7rem;
   }
 
   .podium-likes {
-    gap: 0.2rem;
-    padding: 0.2rem 0.45rem;
-    margin-top: 0.25rem;
+    gap: 0.15rem;
+    padding: 0.15rem 0.35rem;
+    margin-top: 0.15rem;
   }
   .podium-likes svg {
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 0.65rem;
+    height: 0.65rem;
   }
   .podium-likes span {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   .podium-card--first .podium-likes span {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -1239,6 +1255,16 @@ onUnmounted(() => {
 
   .ranking-wave-canvas {
     width: 200vw;
+    top: -80px;
+  }
+
+  .ranking-title-decor {
+    gap: 0.4rem;
+  }
+
+  .ranking-title-decor .title-ornament {
+    width: clamp(1.8rem, 4vw, 3rem);
+    height: 0.7rem;
   }
 
   .ranking-tabs {
@@ -1256,47 +1282,59 @@ onUnmounted(() => {
   }
 
   .podium-card {
-    padding: 0.5rem 0.25rem;
     border-radius: 0.5rem;
   }
 
   .podium-card--first {
-    padding: 0.6rem 0.3rem;
     border-radius: 0.6rem;
   }
 
+  .podium-poster {
+    border-radius: 0.35rem 0.35rem 0 0;
+  }
+
   .podium-rank-num {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
   .podium-card--first .podium-rank-num {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+  }
+
+  .podium-info {
+    padding: 0.35rem 0.25rem 0.4rem;
+    gap: 0.05rem;
+  }
+  .podium-card--first .podium-info {
+    padding: 0.4rem 0.3rem 0.45rem;
+    gap: 0.1rem;
   }
 
   .podium-title {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
+    -webkit-line-clamp: 1;
   }
   .podium-card--first .podium-title {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
   }
 
   .podium-major {
-    font-size: 0.5rem;
-    padding: 0.05rem 0.3rem;
+    font-size: 0.48rem;
+    padding: 0.04rem 0.25rem;
   }
 
   .podium-likes {
-    padding: 0.15rem 0.35rem;
-    gap: 0.15rem;
+    padding: 0.12rem 0.3rem;
+    gap: 0.1rem;
   }
   .podium-likes svg {
-    width: 0.6rem;
-    height: 0.6rem;
+    width: 0.55rem;
+    height: 0.55rem;
   }
   .podium-likes span {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
   .podium-card--first .podium-likes span {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .rest-card {
@@ -1348,6 +1386,15 @@ onUnmounted(() => {
 
   .title-trophy {
     width: 2.5rem;
+  }
+
+  .ranking-title-decor {
+    gap: 0.3rem;
+  }
+
+  .ranking-title-decor .title-ornament {
+    width: clamp(1.4rem, 3.5vw, 2.2rem);
+    height: 0.55rem;
   }
 
   .ranking-tab {

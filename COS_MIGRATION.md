@@ -1,6 +1,6 @@
 # 腾讯云 COS 资源说明
 
-项目视频和封面文件均存储在腾讯云 COS 对象存储，前端直接访问 COS URL。
+项目**视频文件**存储在腾讯云 COS 对象存储。**作品封面图片**使用本地 WebP（`frontend/public/data/`），不走 COS。
 
 ## 基本信息
 
@@ -15,7 +15,7 @@
 | 电子信息工程 | `resource/Ele/` | 001-011.mp4 | 11 |
 | 广播电视工程 | `resource/Rte/` | 001-010.mp4 | 10 |
 
-**总计 33 个作品**
+**总计 33 个视频**
 
 ## URL 格式
 
@@ -25,11 +25,11 @@
 广播电视 (w024-w033)：https://whcm-1353140174.cos.ap-nanjing.myqcloud.com/resource/Rte/{id}.mp4
 ```
 
-数据库 works 表中 poster_url 和 video_url 字段存储完整 COS URL。
+数据库 `video_url` 存储 COS URL，`poster_url` 存储本地 WebP 路径（`/data/wXXX.webp`）。
 
 ## 环境配置
 
-前端 `.env`：
+前端 `.env`（COS_BASE_URL 仅用于视频）：
 ```env
 NUXT_PUBLIC_COS_BASE_URL=https://whcm-1353140174.cos.ap-nanjing.myqcloud.com
 ```
@@ -54,8 +54,13 @@ COS 存储桶需配置 CORS 允许前端域名：
 
 ## 故障排查
 
-**视频/图片加载失败**：
+**视频加载失败**：
 1. 浏览器控制台查看是否为 CORS 错误
 2. 检查 COS URL 是否可访问：`curl -I <cos-url>`
-3. 确认数据库 URL 格式正确
+3. 确认数据库 `video_url` 格式正确
 4. 检查存储桶权限是否为"公有读"
+5. 确认 COS Referer 防盗链白名单包含当前域名
+
+**封面图片加载失败**：
+1. 检查 `frontend/public/data/wXXX.webp` 文件是否存在
+2. 确认数据库 `poster_url` 格式为 `/data/wXXX.webp`

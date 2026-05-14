@@ -13,14 +13,15 @@
 | 前端 | Nuxt 3 + Vue 3 + TypeScript + Tailwind CSS + Pinia + Three.js + GSAP |
 | 后端 | Rust + axum 0.7 + SQLx + MySQL 8.0 |
 | 缓存/限流 | Redis 7 |
-| 静态资源 | 腾讯云 COS 对象存储 |
+| 静态资源 | 本地 WebP（封面）+ 腾讯云 COS（视频） |
 | 部署 | Nginx 静态托管 (SSG) + Rust API |
 
 ## 📚 文档导航
 
 - **[CLAUDE.md](CLAUDE.md)** — 完整项目文档（AI 开发指南）
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** — 部署指南（含 Nginx 配置 + 数据库）
-- **[COS_MIGRATION.md](COS_MIGRATION.md)** — COS 资源管理说明
+- **[SERVER_OPS.md](SERVER_OPS.md)** — 服务器部署与运维文档
+- **[COS_MIGRATION.md](COS_MIGRATION.md)** — COS 资源说明（视频）
 - **[毕业设计作品汇总.md](毕业设计作品汇总.md)** — 33个作品源数据
 
 ## 🚀 快速启动
@@ -69,10 +70,11 @@ nginx.exe
 ## 核心特性
 
 - **无需登录**：游客直接浏览、点赞、评论，自动生成昵称
+- **一键分享**：SharePanel 支持复制链接、微信二维码分享
 - **智能防刷**：Redis 滑动窗口限流 + SHA256 指纹识别 + 敏感词过滤
 - **安全防护**：XSS 转义、SQL 参数化查询、蜜罐字段、数据哈希存储
 - **日重置点赞**：每天凌晨后同一用户可对同一作品再次点赞
-- **响应式设计**：PC、平板、手机全适配
+- **响应式设计**：PC、平板、手机全适配，触摸设备交互优化
 
 ## 环境要求
 

@@ -62,7 +62,7 @@
           <!-- 背景装饰图标 -->
           <div :class="['major-card-bg-icon', `bg-icon--${index}`]">
             <img
-              :src="index === 0 ? '/images/icon_1.png' : index === 1 ? '/images/icon_2.png' : '/images/icon_3.png'"
+              :src="index === 0 ? '/images/icon_1.webp' : index === 1 ? '/images/icon_2.webp' : '/images/icon_3.webp'"
               alt=""
               class="bg-icon-img"
             />
@@ -540,6 +540,15 @@ const { magneticButtons, magneticStates, handleMagneticMove, handleMagneticLeave
   .stats-badge-sub {
     font-size: 0.55rem;
   }
+
+  .major-card-body {
+    padding: 1.25rem;
+  }
+
+  .major-card-bg-icon {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -565,7 +574,7 @@ const { magneticButtons, magneticStates, handleMagneticMove, handleMagneticLeave
 
   .majors-lead {
     font-size: 0.75rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
   .majors-stats {

@@ -10,18 +10,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 技术栈
 
-**前端**：Nuxt 3 + Vue 3 + TypeScript + Tailwind CSS + Pinia + Three.js + GSAP  
+**前端**：Nuxt 3 + Vue 3 + TypeScript + Tailwind CSS + Pinia + Three.js + GSAP + qrcode  
 **后端**：Rust + axum 0.7 + SQLx + MySQL 8.0 + Redis  
+**静态资源**：作品封面本地 WebP（`frontend/public/data/`），视频 COS 对象存储  
 **部署**：Nginx 静态托管（SSG）+ Rust 后端 API  
 **包管理器**：pnpm（前端必须使用 pnpm）
 
 ## 项目特点
 
 - **无需登录**：游客直接浏览、点赞、评论
+- **一键分享**：SharePanel 支持复制链接、微信二维码分享
 - **智能防刷**：Redis 限流 + 指纹识别 + 敏感词过滤
 - **高性能**：Rust 后端 + SSG 静态页面 + 游标分页
 - **安全可靠**：XSS 防护 + SQL 注入防护 + 数据哈希存储
-- **响应式设计**：PC、平板、手机全适配
+- **响应式设计**：PC、平板、手机全适配，触摸设备交互优化
 
 ## 快速启动
 
@@ -104,10 +106,12 @@ mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM likes WHERE
 ```
 ├── frontend/                  # Nuxt 3 前端
 │   ├── pages/                # 路由页面（4个）
-│   ├── components/           # Vue 组件
+│   ├── components/           # Vue 组件（13个，含 SharePanel）
 │   ├── stores/               # Pinia 状态管理（visitor, interactions）
-│   ├── composables/          # 组合式函数（useWorks, useWaveBackground）
+│   ├── composables/          # 组合式函数（useWorks, useMagneticButton, useParticles 等）
 │   ├── types/                # TypeScript 类型定义
+│   ├── public/
+│   │   └── data/             # 作品封面 WebP（w001-w033.webp）+ works.json
 │   └── nuxt.config.ts        # Nuxt 配置（含 SSG prerender）
 ├── backend/                  # Rust axum 后端
 │   ├── src/
@@ -174,6 +178,19 @@ mysql -uroot -p123456 graduation_exhibition -e "SELECT COUNT(*) FROM likes WHERE
 - 日重置：指纹含日期，每天凌晨后同一用户可对同一作品再次点赞
 - 点赞数为跨天累计（所有 is_active=TRUE 记录总和）
 
+### 一键分享（SharePanel）
+- 全局弹窗组件，Teleport 到 body
+- PC 端：自动复制链接 + 微信二维码（qrcode 库生成）+ 提示文字
+- 移动端：调用 `navigator.share()` Web Share API，分享标题+简介+链接
+- 响应式：768px 断点区分 PC/移动端行为
+
+### 封面图片策略
+- 作品封面使用本地 WebP 文件（`frontend/public/data/w001.webp ~ w033.webp`），约 4.5MB 总计
+- 视频文件保留在腾讯云 COS（`https://whcm-1353140174.cos.ap-nanjing.myqcloud.com/resource/`）
+- 卡片组件使用 `<img>` 加载封面（不再用 `<video>` 预加载视频），大幅降低流量
+- 视频详情页 `<video>` 标签设置 `poster` 属性，播放前不下载视频数据
+- 首屏图片（hero_bg、icon_1/2/3、logo 等）全部转为 WebP，5.4MB → 334KB
+
 ### SSG 预渲染
 - `nuxt.config.ts` 中配置 `nitro.prerender` 自动预渲染所有页面
 - 主要页面 + 33个作品详情页全部静态生成
@@ -202,6 +219,7 @@ COS_BASE_URL=https://whcm-1353140174.cos.ap-nanjing.myqcloud.com
 
 **注意**：
 - `NUXT_PUBLIC_API_BASE` 设为 `/api`（相对路径），避免硬编码 localhost 导致外部设备无法访问
+- `NUXT_PUBLIC_COS_BASE_URL` 仅用于视频文件，封面图片使用本地 WebP（`/data/wXXX.webp`）
 - 数据库密码默认为 `123456`（开发环境）
 - 数据库名必须是 `graduation_exhibition`
 
@@ -267,6 +285,11 @@ pnpm install
 - 检查 `frontend/.env` 中 `NUXT_PUBLIC_API_BASE` 应为 `/api`（相对路径）
 - 确认 Nginx 正确代理 `/api/` 到后端 8080
 
+### 作品封面图片不显示
+- 确认 `frontend/public/data/w001.webp ~ w033.webp` 文件存在
+- 检查数据库 `poster_url` 是否为 `/data/wXXX.webp` 格式
+- 若数据库仍为 COS URL，执行：`UPDATE works SET poster_url = CONCAT('/data/', id, '.webp');`
+
 ### 作品详情页无数据
 - SSG 模式下需确保构建时后端正在运行（用于获取作品数据生成静态页）
 - 清理构建缓存：`rm -rf .nuxt .output && pnpm generate`
@@ -275,5 +298,6 @@ pnpm install
 
 - [README.md](README.md) — 项目说明
 - [DEPLOYMENT.md](DEPLOYMENT.md) — 部署指南（含 Nginx 配置）
-- [COS_MIGRATION.md](COS_MIGRATION.md) — COS 资源说明
+- [SERVER_OPS.md](SERVER_OPS.md) — 服务器部署与运维文档
+- [COS_MIGRATION.md](COS_MIGRATION.md) — COS 资源说明（视频）
 - [毕业设计作品汇总.md](毕业设计作品汇总.md) — 33个作品源信息

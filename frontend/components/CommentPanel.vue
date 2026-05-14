@@ -274,9 +274,10 @@ onMounted(async () => {
   }
 
   .comment-panel textarea {
-    font-size: 0.85rem;
-    padding: 0.65rem 0.75rem;
+    font-size: 1rem;
+    padding: 0.75rem;
     border-radius: 0.75rem;
+    line-height: 1.5;
   }
 
   .comment-panel .flex.items-center.justify-between {
@@ -287,8 +288,9 @@ onMounted(async () => {
 
   .comment-panel button {
     width: 100%;
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
   }
 
   .comment-item {
@@ -296,21 +298,21 @@ onMounted(async () => {
   }
 
   .comment-item .w-10.h-10 {
-    width: 2.25rem;
-    height: 2.25rem;
-    font-size: 0.7rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.75rem;
   }
 
   .comment-item .font-medium {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .comment-item .text-sm.text-text-light {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
   }
 
   .comment-item .text-text-secondary {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 }
 

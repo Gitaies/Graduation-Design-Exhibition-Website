@@ -6,15 +6,12 @@
     <div class="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-2xl hover:shadow-primary-blue/20 transition-all duration-300 hover:-translate-y-2">
       <!-- 视频封面 -->
       <div class="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-        <video
+        <img
           v-if="work.poster_url"
           :src="work.poster_url"
-          preload="metadata"
-          muted
-          playsinline
-          disablepictureinpicture
+          :alt="work.title"
+          loading="lazy"
           class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
         />
         <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
           <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,6 +130,13 @@ const formatAuthors = (authors: string[]) => {
   overflow: hidden;
 }
 
+/* 触摸设备播放按钮始终微可见 */
+@media (hover: none) and (pointer: coarse) {
+  .work-card .group-hover\:bg-black\/30 {
+    /* 不改变桌面 hover 逻辑 */
+  }
+}
+
 /* ============================================
    响应式
    ============================================ */
@@ -154,6 +158,12 @@ const formatAuthors = (authors: string[]) => {
     padding-right: 0.5rem;
     font-size: 0.7rem;
   }
+
+  .work-card .bottom-3 .px-2\.5 {
+    min-height: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -166,12 +176,12 @@ const formatAuthors = (authors: string[]) => {
   }
 
   .work-card h3 {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 0.35rem;
   }
 
   .work-card .text-sm.text-text-secondary {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     margin-bottom: 0.75rem;
   }
 
@@ -181,8 +191,8 @@ const formatAuthors = (authors: string[]) => {
   }
 
   .work-card .w-16.h-16 {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
 
   .work-card .w-8.h-8 {

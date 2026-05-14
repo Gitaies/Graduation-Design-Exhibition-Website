@@ -62,15 +62,12 @@
 
           <div class="ranking-content">
             <div class="ranking-poster">
-              <video
+              <img
                 v-if="getWork(item.work_id)?.posterUrl"
-                :src="getWork(item.work_id)?.posterUrl"
-                preload="metadata"
-                muted
-                playsinline
-                disablepictureinpicture
+                :src="getWork(item.work_id)?.posterUrl || ''"
+                :alt="getWork(item.work_id)?.title"
+                loading="lazy"
                 class="w-full h-full object-cover"
-                @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
               />
               <div class="play-button">
                 <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -124,15 +121,12 @@
           </div>
 
           <div class="ranking-poster-small">
-            <video
+            <img
               v-if="getWork(item.work_id)?.posterUrl"
-              :src="getWork(item.work_id)?.posterUrl"
-              preload="metadata"
-              muted
-              playsinline
-              disablepictureinpicture
+              :src="getWork(item.work_id)?.posterUrl || ''"
+              :alt="getWork(item.work_id)?.title"
+              loading="lazy"
               class="w-full h-full object-cover"
-              @loadeddata="(e) => { const v = e.target as HTMLVideoElement; v.currentTime = 5; v.pause(); }"
             />
           </div>
 

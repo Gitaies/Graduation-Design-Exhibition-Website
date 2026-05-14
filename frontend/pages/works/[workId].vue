@@ -25,6 +25,7 @@
               v-if="work.video_url"
               ref="videoRef"
               :src="work.video_url"
+              :poster="work.poster_url"
               controls
               preload="metadata"
               playsinline
@@ -67,9 +68,9 @@
               </span>
             </div>
 
-            <!-- 作品简介 -->
+            <!-- 作品介绍 -->
             <div class="mb-6">
-              <h2 class="text-lg font-bold text-text-main mb-3">作品简介</h2>
+              <h2 class="text-lg font-bold text-text-main mb-3">作品介绍</h2>
               <p class="text-text-secondary leading-relaxed">
                 {{ work.introduction }}
               </p>
@@ -121,7 +122,7 @@
 
             <!-- 分享按钮 -->
             <button
-              @click="shareWork"
+              @click="sharePanelRef?.open()"
               class="w-full px-4 py-3 bg-gray-100 hover:bg-gray-200 text-text-main rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,12 +142,21 @@
     </div>
 
     <ExhibitionFooter />
+
+    <!-- 分享面板 -->
+    <SharePanel
+      ref="sharePanelRef"
+      :work-title="work?.title || ''"
+      :work-description="work?.introduction || ''"
+      :work-poster="work?.poster_url || ''"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import SharePanel from '~/components/SharePanel.vue'
 
 const route = useRoute()
 const workId = computed(() => route.params.workId as string)
@@ -184,16 +194,8 @@ try {
 const interactionsStore = useInteractionsStore()
 const interaction = computed(() => interactionsStore.getInteraction(workId.value))
 
-// 分享功能
-const shareWork = async () => {
-  const url = window.location.href
-  try {
-    await navigator.clipboard.writeText(url)
-    alert('链接已复制到剪贴板')
-  } catch (err) {
-    alert('复制失败，请手动复制链接')
-  }
-}
+// 分享面板
+const sharePanelRef = ref<InstanceType<typeof SharePanel> | null>(null)
 
 // 设置页面标题
 useHead({

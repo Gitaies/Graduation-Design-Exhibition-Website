@@ -10,13 +10,13 @@
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-3 group">
           <img
-            src="/images/logo.png"
+            src="/images/logo.webp"
             alt="传媒技术学院"
             class="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
           >
-          <div class="hidden md:flex flex-col">
-            <span class="text-lg font-semibold text-gray-800 leading-tight">传媒技术学院</span>
-            <span class="text-xs text-gray-500 tracking-wide">School of Media Technology</span>
+          <div class="flex flex-col">
+            <span class="text-sm md:text-lg font-semibold text-gray-800 leading-tight">传媒技术学院</span>
+            <span class="text-[0.6rem] md:text-xs text-gray-500 tracking-wide">School of Media Technology</span>
           </div>
         </NuxtLink>
 
@@ -39,7 +39,7 @@
         <!-- 移动端菜单按钮 -->
         <button
           @click="toggleMenu"
-          class="md:hidden relative w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary-blue transition-colors"
+          class="md:hidden relative w-11 h-11 flex items-center justify-center text-gray-700 hover:text-primary-blue transition-colors"
           :aria-label="isMenuOpen ? '关闭菜单' : '打开菜单'"
         >
           <span class="hamburger-box relative w-5 h-4">
@@ -353,9 +353,11 @@ const onNavLeave = (event: MouseEvent) => {
 }
 
 .mobile-nav-link {
-  display: block;
-  padding: 0.875rem 0.5rem;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #374151;
   text-decoration: none;
@@ -367,7 +369,7 @@ const onNavLeave = (event: MouseEvent) => {
 .mobile-nav-link:active {
   color: #1466ff;
   background: rgba(20, 102, 255, 0.06);
-  padding-left: 0.75rem;
+  padding-left: 1rem;
 }
 
 /* ============================================
@@ -403,22 +405,34 @@ const onNavLeave = (event: MouseEvent) => {
 
 @media (max-width: 768px) {
   .nav-header .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 
   .nav-header .flex.items-center {
     height: 3.5rem;
   }
+
+  .nav-header img {
+    height: 2.5rem;
+  }
 }
 
 @media (max-width: 480px) {
   .nav-header .flex.items-center {
-    height: 3rem;
+    height: 3.25rem;
   }
 
   .nav-header img {
-    height: 2.25rem;
+    height: 2rem;
+  }
+
+  .nav-header .flex-col span:first-child {
+    font-size: 0.8rem;
+  }
+
+  .nav-header .flex-col span:last-child {
+    font-size: 0.5rem;
   }
 }
 </style>

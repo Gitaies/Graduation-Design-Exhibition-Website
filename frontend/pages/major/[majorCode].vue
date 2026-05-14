@@ -6,7 +6,7 @@
     <section :class="['major-hero', `major-hero-${majorCode}`]">
       <div class="container mx-auto px-4">
         <!-- 面包屑 -->
-        <nav class="hero-breadcrumb" data-anim="fade">
+        <nav class="hero-breadcrumb breadcrumb-anim">
           <NuxtLink to="/" class="hero-breadcrumb-link">首页</NuxtLink>
           <span class="hero-breadcrumb-sep">/</span>
           <NuxtLink to="/#majors" class="hero-breadcrumb-link">专业展区</NuxtLink>
@@ -332,11 +332,6 @@ watch(majorCode, () => {
 onMounted(() => {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-  tl.from('[data-anim="fade"]', {
-    opacity: 0,
-    y: 16,
-    duration: 0.6,
-  })
   tl.from('[data-anim="index"]', {
     opacity: 0,
     x: -40,
@@ -411,9 +406,11 @@ useHead({
 .hero-breadcrumb {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   margin-bottom: 3rem;
   font-size: 0.8rem;
+  line-height: 1.4;
   position: relative;
   z-index: 1;
 }
@@ -421,6 +418,11 @@ useHead({
 .hero-breadcrumb-link {
   color: oklch(0.48 0.04 250);
   transition: color 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 .hero-breadcrumb-link:hover {
   color: #1466ff;
@@ -428,11 +430,39 @@ useHead({
 
 .hero-breadcrumb-sep {
   color: oklch(0.7 0.02 250);
+  flex-shrink: 0;
+  user-select: none;
+  display: flex;
+  align-items: center;
 }
 
 .hero-breadcrumb-current {
   color: oklch(0.25 0.01 250);
   font-weight: 600;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+/* 修复移动端触摸设备上 <a> 标签被全局 min-height/min-width 撑大导致面包屑对不齐 */
+@media (hover: none) and (pointer: coarse) {
+  .hero-breadcrumb-link {
+    min-height: 0;
+    min-width: 0;
+  }
+}
+
+/* 面包屑 CSS 入场动画（避免 GSAP transform 破坏 flex 布局） */
+.breadcrumb-anim {
+  animation: breadcrumbFadeIn 0.6s ease-out both;
+}
+@keyframes breadcrumbFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* 主体区域 — 左右两栏 */
@@ -857,15 +887,16 @@ useHead({
   .hero-breadcrumb {
     margin-bottom: 2rem;
     font-size: 0.72rem;
+    gap: 0.4rem;
   }
 
   .hero-body {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
   }
 
   .hero-left {
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .hero-index {
@@ -875,21 +906,21 @@ useHead({
   }
 
   .hero-index-num {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
   }
 
   .hero-index-line {
-    width: 2.5rem;
-    height: 2px;
+    width: 2px;
+    height: 2.5rem;
     margin-top: 0;
   }
 
   .hero-name-main {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .hero-theme {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
   }
 
   .hero-footer {
@@ -897,7 +928,43 @@ useHead({
   }
 
   .hero-right {
-    display: none;
+    min-height: auto;
+    align-self: center;
+    position: absolute;
+    top: 4rem;
+    right: 11rem;
+  }
+
+  .geo-ring {
+    width: 200px;
+    height: 200px;
+  }
+
+  .geo-ring-inner {
+    width: 130px;
+    height: 130px;
+  }
+
+  .geo-core-dot,
+  .geo-core-pulse {
+    width: 7px;
+    height: 7px;
+  }
+
+  .geo-orbit-1 { width: 11px; height: 11px; top: 67px; left: 44px; }
+  .geo-orbit-2 { width: 9px; height: 9px; top: -44px; left: -67px; }
+  .geo-orbit-3 { width: 7px; height: 7px; top: -111px; left: 56px; }
+
+  .geo-dot-1 { width: 11px; height: 11px; top: 89px; left: -111px; }
+  .geo-dot-2 { width: 9px; height: 9px; top: 0px; left: 67px; }
+  .geo-dot-3 { width: 7px; height: 7px; top: -67px; left: -111px; }
+
+  .geo-cross span:first-child { width: 1px; height: 27px; left: 14px; top: 0; }
+  .geo-cross span:last-child  { width: 27px; height: 1px; left: 0; top: 14px; }
+
+  .geo-vert-text {
+    top: -1.5rem;
+    left: 10.2rem;
   }
 
   .mb-8.flex.flex-wrap {
@@ -917,7 +984,8 @@ useHead({
 
   .hero-breadcrumb {
     font-size: 0.68rem;
-    gap: 0.35rem;
+    gap: 0.3rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-index-num {
@@ -938,6 +1006,46 @@ useHead({
 
   .hero-desc {
     font-size: 0.82rem;
+  }
+
+  .hero-right {
+    min-height: auto;
+    align-self: center;
+    position: absolute;
+    top: 4rem;
+    right: 10rem;
+  }
+
+  .geo-ring {
+    width: 190px;
+    height: 190px;
+  }
+
+  .geo-ring-inner {
+    width: 120px;
+    height: 120px;
+  }
+
+  .geo-core-dot,
+  .geo-core-pulse {
+    width: 7px;
+    height: 7px;
+  }
+
+  .geo-orbit-1 { width: 11px; height: 11px; top: 63px; left: 42px; }
+  .geo-orbit-2 { width: 8px; height: 8px; top: -42px; left: -63px; }
+  .geo-orbit-3 { width: 6px; height: 6px; top: -106px; left: 53px; }
+
+  .geo-dot-1 { width: 11px; height: 11px; top: 85px; left: -106px; }
+  .geo-dot-2 { width: 8px; height: 8px; top: 0px; left: 63px; }
+  .geo-dot-3 { width: 6px; height: 6px; top: -63px; left: -106px; }
+
+  .geo-cross span:first-child { width: 1px; height: 25px; left: 13px; top: 0; }
+  .geo-cross span:last-child  { width: 25px; height: 1px; left: 0; top: 13px; }
+
+  .geo-vert-text {
+    top: -1.5rem;
+    left: 9.5rem;
   }
 
   .hero-theme-prefix {
@@ -965,8 +1073,54 @@ useHead({
     padding: 3.5rem 0 1.5rem;
   }
 
+  .hero-breadcrumb {
+    font-size: 0.64rem;
+    gap: 0.25rem;
+    margin-bottom: 1.25rem;
+  }
+
   .hero-index-num {
     font-size: 2.25rem;
+  }
+
+  .hero-right {
+    min-height: auto;
+    align-self: center;
+    position: absolute;
+    top: 4rem;
+    right: 9rem;
+  }
+
+  .geo-ring {
+    width: 180px;
+    height: 180px;
+  }
+
+  .geo-ring-inner {
+    width: 100px;
+    height: 100px;
+  }
+
+  .geo-core-dot,
+  .geo-core-pulse {
+    width: 6px;
+    height: 6px;
+  }
+
+  .geo-orbit-1 { width: 10px; height: 10px; top: 60px; left: 40px;}
+  .geo-orbit-2 { width: 8px; height: 8px; top: -40px; left: -60px;}
+  .geo-orbit-3 { width: 6px; height: 6px; top: -100px; left: 50px;}
+
+  .geo-dot-1 { width: 10px; height: 10px; top: 80px; left: -100px;}
+  .geo-dot-2 { width: 8px; height: 8px; top: 0px; left: 60px;}
+  .geo-dot-3 { width: 6px; height: 6px; top: -60px; left: -100px;}
+
+  .geo-cross span:first-child { width: 1px; height: 24px; left: 12px; top: 0; }
+  .geo-cross span:last-child  { width: 24px; height: 1px; left: 0; top: 12px; }
+
+  .geo-vert-text {
+    top: -1.5rem;
+    left: 8.3rem;
   }
 
   .hero-name-main {

@@ -61,9 +61,9 @@ export function useMagneticButton(count: number) {
       const normalizedX = clamp(dx / (rect.width / 2), -1, 1)
       const normalizedY = clamp(dy / (rect.height / 2), -1, 1)
 
-      state.targetX = dx * 0.28
-      state.targetY = dy * 0.34
-      state.targetScale = 1.045 - (Math.abs(normalizedX) + Math.abs(normalizedY)) * 0.008
+      state.targetX = dx * 0.16
+      state.targetY = dy * 0.20
+      state.targetScale = 1.028 - (Math.abs(normalizedX) + Math.abs(normalizedY)) * 0.005
 
       state.lightX = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100)
       state.lightY = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100)
@@ -79,9 +79,9 @@ export function useMagneticButton(count: number) {
     state.targetScale = 1
     state.isNear = false
 
-    state.velocityX += -state.x * 0.72
-    state.velocityY += -state.y * 0.72
-    state.scaleVelocity += (1 - state.scale) * 0.82
+    state.velocityX += -state.x * 0.55
+    state.velocityY += -state.y * 0.55
+    state.scaleVelocity += (1 - state.scale) * 0.60
   }
 
   let animId: number | null = null
@@ -94,10 +94,10 @@ export function useMagneticButton(count: number) {
         Math.abs(state.scale - 1) > 0.0005
       )
 
-      const stiffness = returning ? 0.34 : 0.20
-      const damping = returning ? 0.58 : 0.72
-      const scaleStiffness = returning ? 0.34 : 0.20
-      const scaleDamping = returning ? 0.58 : 0.74
+      const stiffness = returning ? 0.22 : 0.13
+      const damping = returning ? 0.68 : 0.80
+      const scaleStiffness = returning ? 0.22 : 0.13
+      const scaleDamping = returning ? 0.68 : 0.82
 
       state.velocityX += (state.targetX - state.x) * stiffness
       state.velocityY += (state.targetY - state.y) * stiffness

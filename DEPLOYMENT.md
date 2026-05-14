@@ -165,7 +165,8 @@ pnpm install
 
 ### 图片/视频无法加载
 
-检查 COS 存储桶 CORS 配置是否允许你的域名。
+- 封面图片：检查 `frontend/public/data/` 下 WebP 文件是否存在，数据库 `poster_url` 是否为 `/data/wXXX.webp`
+- 视频：检查 COS 存储桶 CORS 配置是否允许你的域名
 
 ---
 
@@ -180,9 +181,7 @@ pnpm install
 | Redis | 7 |
 | Nginx | 1.24+ |
 
-## COS 资源
+## 静态资源
 
-作品视频和封面存储在腾讯云 COS：
-- 基础 URL：`https://whcm-1353140174.cos.ap-nanjing.myqcloud.com`
-- 路径格式：`/resource/{SE|Ele|RTE}/{001-012}.mp4`
-- 详见 [COS_MIGRATION.md](COS_MIGRATION.md)
+- **作品封面**：本地 WebP（`frontend/public/data/w001.webp ~ w033.webp`），SSG 输出到 `.output/public/data/`
+- **作品视频**：腾讯云 COS（`https://whcm-1353140174.cos.ap-nanjing.myqcloud.com/resource/`），详见 [COS_MIGRATION.md](COS_MIGRATION.md)

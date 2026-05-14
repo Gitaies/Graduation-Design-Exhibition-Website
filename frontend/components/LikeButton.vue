@@ -113,11 +113,20 @@ const toggleLike = async () => {
   animation: spin 1s linear infinite;
 }
 
+/* 触摸设备按下反馈 */
+@media (hover: none) and (pointer: coarse) {
+  .like-button:active {
+    transform: scale(0.96);
+    transition: transform 0.1s ease;
+  }
+}
+
 /* ============================================
    响应式
    ============================================ */
 @media (max-width: 640px) {
   .like-button {
+    min-height: 3rem;
     padding: 0.75rem 1rem;
     border-radius: 0.75rem;
   }
@@ -134,6 +143,7 @@ const toggleLike = async () => {
 
 @media (max-width: 480px) {
   .like-button {
+    min-height: 2.75rem;
     padding: 0.65rem 0.875rem;
     gap: 0.5rem;
   }

@@ -7,7 +7,7 @@
     <canvas ref="particleCanvas" class="absolute inset-0 z-[1]"></canvas>
 
     <div class="container mx-auto px-4 md:px-8 lg:px-12 relative z-10">
-      <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between min-h-screen py-20 lg:py-24">
+      <div class="hero-inner flex flex-col lg:flex-row items-center lg:items-start justify-between min-h-screen py-20 lg:py-24">
         <!-- 文字内容区 -->
         <div class="text-content max-w-2xl lg:max-w-xl xl:max-w-2xl pt-8 lg:pt-16">
           <!-- 英文小标 -->
@@ -62,9 +62,20 @@
               class="hero-cta group"
               @click.prevent="scrollToSection('#majors')"
             >
-              <span>进入展区</span>
-              <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              <span class="cta-surface" aria-hidden="true"></span>
+              <!-- 科技 icon：六边形节点 -->
+              <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2l8.66 5v10l-8.66 5-8.66-5V7z"/>
+                <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+                <path d="M12 9.5v-4M12 18.5v-4M7.7 7.6l2.8 1.6M13.5 14.8l2.8 1.6"/>
+              </svg>
+              <!-- 分割线 -->
+              <span class="cta-sep" aria-hidden="true"></span>
+              <!-- 文字 -->
+              <span class="cta-text">进入展区</span>
+              <!-- 箭头 -->
+              <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14m-4-4l4 4-4 4"/>
               </svg>
             </a>
           </div>
@@ -75,7 +86,7 @@
           <ClientOnly>
             <HeroIcon3D />
             <template #fallback>
-              <img src="~/assets/images/hero/hero_icon.png" alt="装饰" class="hero-icon-fallback" />
+              <img src="~/assets/images/hero/hero_icon.webp" alt="装饰" class="hero-icon-fallback" />
             </template>
           </ClientOnly>
         </div>
@@ -139,7 +150,7 @@ onMounted(() => {
 }
 
 .hero-background {
-  background-image: url('~/assets/images/hero/hero_bg.png');
+  background-image: url('~/assets/images/hero/hero_bg.webp');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -173,6 +184,7 @@ canvas {
   letter-spacing: -0.015em;
   color: #0f172a;
   margin-bottom: 0.75rem;
+  white-space: nowrap;
   font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
 }
 
@@ -302,35 +314,109 @@ canvas {
    CTA 按钮
    ============================================ */
 .hero-cta {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.875rem 2rem;
-  background: white;
-  color: #1466ff;
-  border: 2px solid #1466ff;
-  border-radius: 0.625rem;
+  gap: 0;
+  padding: 0.92rem 1.75rem;
+  background: linear-gradient(135deg, #1d5cf0 0%, #1466ff 60%, #0f47d6 100%);
+  border: none;
+  border-radius: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
+  letter-spacing: 0.05em;
   text-decoration: none;
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  isolation: isolate;
+  overflow: hidden;
+  color: #ffffff;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s ease;
+  box-shadow: 0 2px 14px rgba(20, 102, 255, 0.28),
+              0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-.hero-cta:hover {
-  background: #1466ff;
-  color: white;
-  box-shadow: 0 8px 30px rgba(20, 102, 255, 0.3);
-  transform: translateY(-1px);
+/* ---- 表面高光线 ---- */
+.cta-surface {
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.15) 0%,
+    rgba(255,255,255,0.03) 35%,
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
+/* ---- 科技 icon：六边形节点 ---- */
+.cta-icon {
+  position: relative;
+  z-index: 1;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #ffffff;
+  flex-shrink: 0;
+  margin-right: 0.65rem;
+  transition: opacity 0.25s ease;
+}
+
+.hero-cta:hover .cta-icon {
+  opacity: 0.85;
+}
+
+/* ---- 分割线 ---- */
+.cta-sep {
+  position: relative;
+  z-index: 1;
+  width: 2px;
+  align-self: stretch;
+  margin: 2px 0.65rem 2px 0;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 0.25s ease;
+}
+
+.hero-cta:hover .cta-sep {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* ---- 文字 ---- */
+.cta-text {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+  margin-right: 0.55rem;
+}
+
+/* ---- 箭头 ---- */
 .cta-arrow {
-  width: 1.125rem;
-  height: 1.125rem;
-  transition: transform 0.35s ease;
+  position: relative;
+  z-index: 1;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.25s ease;
+}
+
+/* ---- 悬停 ---- */
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(20, 102, 255, 0.40),
+              0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .hero-cta:hover .cta-arrow {
   transform: translateX(4px);
+  color: #ffffff;
+}
+
+/* ---- 点击 ---- */
+.hero-cta:active {
+  transform: translateY(0);
+  transition: transform 0.08s ease;
 }
 
 /* ============================================
@@ -387,7 +473,7 @@ canvas {
 
 /* 平板横屏 — 缩小视觉区 */
 @media (max-width: 1024px) {
-  .hero-section .flex-col {
+  .hero-inner {
     padding-top: 6rem;
     padding-bottom: 5rem;
   }
@@ -420,32 +506,43 @@ canvas {
 
 /* 手机横屏 / 小平板 — 堆叠布局 */
 @media (max-width: 768px) {
-  .hero-section .flex-col {
-    padding-top: 5rem;
-    padding-bottom: 4rem;
+  .hero-background {
+    background-image: url('~/assets/images/hero/hero_bg1.webp');
+    background-size: auto 100%;
+    background-position: center top;
+  }
+
+  .hero-section .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .hero-inner {
+    flex-direction: column !important;
+    justify-content: flex-start;
+    padding-top: 0;
+    padding-bottom: 2rem;
   }
 
   .hero-visual {
     width: 280px;
     height: 210px;
-    margin-top: 0.5rem;
-  }
-
-  .hero-section .lg\:flex-row {
-    flex-direction: column !important;
-  }
-
-  .hero-section .lg\:items-start {
-    align-items: center !important;
+    margin-top: 2rem;
   }
 
   .text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
   }
 
   .hero-description {
-    max-width: 100%;
+    max-width: 90%;
     text-align: center;
   }
 
@@ -464,15 +561,7 @@ canvas {
   }
 
   .hero-cta {
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero-section .container .flex-col.lg\:flex-row > div:first-child {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 1rem auto;
   }
 }
 
@@ -484,36 +573,48 @@ canvas {
     align-items: center;
   }
 
-  .hero-section .flex-col {
-    padding-top: 4rem;
-    padding-bottom: 1.5rem;
+  .hero-section .container {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .hero-inner {
+    padding-top: 0;
+    padding-bottom: 1.25rem;
     min-height: auto;
   }
 
   .hero-eyebrow {
     font-size: 0.65rem;
     letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
   }
 
   .hero-title {
     font-size: clamp(1.8rem, 8vw, 2.5rem);
     text-align: center;
+    margin-bottom: 0.6rem;
   }
 
   .hero-subtitle {
     font-size: 0.9rem;
     text-align: center;
+    margin-bottom: 0.5rem;
   }
 
   .hero-english {
     font-size: 0.68rem;
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   .hero-description {
     font-size: 0.8rem;
     line-height: 1.65;
-    padding: 0 0.25rem;
+    max-width: 22rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 0.5rem;
     margin-bottom: 1.25rem;
   }
 
@@ -523,14 +624,14 @@ canvas {
     max-width: 400px;
     height: auto;
     aspect-ratio: 4 / 3;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
   }
 
   /* 三张入口卡片保持一行 */
   .major-cards {
     flex-direction: row;
     gap: 0.4rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .major-card {
@@ -548,6 +649,7 @@ canvas {
 
   .major-name {
     font-size: 0.78rem;
+    width: 68px;
   }
 
   .major-theme {
@@ -566,8 +668,13 @@ canvas {
   .hero-cta {
     width: 100%;
     justify-content: center;
-    padding: 0.65rem 1.25rem;
+    padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+  }
+
+  .cta-arrow {
+    width: 1rem;
+    height: 1rem;
   }
 
   .scroll-indicator {
@@ -582,23 +689,34 @@ canvas {
     overflow-x: hidden;
   }
 
-  .hero-section .flex-col {
-    padding-top: 3.25rem;
-    padding-bottom: 1.25rem;
+  .hero-section .container {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .hero-inner {
+    padding-top: 0;
+    padding-bottom: 1rem;
   }
 
   .hero-title {
-    font-size: clamp(1.5rem, 7vw, 1.9rem);
+    font-size: clamp(1.35rem, 6.5vw, 1.8rem);
+    margin-bottom: 0.5rem;
   }
 
   .hero-subtitle {
     font-size: 0.8rem;
+    margin-bottom: 0.4rem;
   }
 
   .hero-description {
     font-size: 0.75rem;
     line-height: 1.6;
-    padding: 0;
+    max-width: 20rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 0.35rem;
+    margin-bottom: 1rem;
   }
 
   .hero-visual {
@@ -606,7 +724,7 @@ canvas {
     max-width: 480px;
     height: auto;
     aspect-ratio: 4 / 3;
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 
   .major-cards {

@@ -6,10 +6,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["人工智能", "Web应用", "LangChain"],
-      "authors": ["龙文星"],
+      "tags": [
+        "人工智能",
+        "Web应用",
+        "LangChain"
+      ],
+      "authors": [
+        "龙文星"
+      ],
       "teacher": "王俊杰",
-      "posterUrl": "/static/posters/w001.jpg",
+      "posterUrl": "/data/w001.webp",
       "videoUrl": "/static/videos/w001.mp4",
       "duration": "02:34",
       "introduction": "基于LangChain4j框架的AI驱动网站生成平台，通过自然语言描述自动生成网站代码，提升开发效率。"
@@ -20,10 +26,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["计算机视觉", "大数据", "YOLO"],
-      "authors": ["陈曾烨"],
+      "tags": [
+        "计算机视觉",
+        "大数据",
+        "YOLO"
+      ],
+      "authors": [
+        "陈曾烨"
+      ],
       "teacher": "孙佩娟",
-      "posterUrl": "/static/posters/w002.jpg",
+      "posterUrl": "/data/w002.webp",
       "videoUrl": "/static/videos/w002.mp4",
       "duration": "03:12",
       "introduction": "结合YOLO目标检测算法与大数据分析技术，实现交通流量的实时监测与智能分析，为城市交通管理提供数据支持。"
@@ -34,10 +46,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["Web应用", "医疗健康", "Vue.js"],
-      "authors": ["马小念"],
+      "tags": [
+        "Web应用",
+        "医疗健康",
+        "Vue.js"
+      ],
+      "authors": [
+        "马小念"
+      ],
       "teacher": "罗灿峰",
-      "posterUrl": "/static/posters/w003.jpg",
+      "posterUrl": "/data/w003.webp",
       "videoUrl": "/static/videos/w003.mp4",
       "duration": "02:45",
       "introduction": "基于Vue和Node.js技术栈的糖尿病健康咨询系统，为患者提供健康管理、饮食建议和在线咨询服务。"
@@ -48,10 +66,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["机器学习", "大数据", "Spark"],
-      "authors": ["何思瑶"],
+      "tags": [
+        "机器学习",
+        "大数据",
+        "Spark"
+      ],
+      "authors": [
+        "何思瑶"
+      ],
       "teacher": "李念",
-      "posterUrl": "/static/posters/w004.jpg",
+      "posterUrl": "/data/w004.webp",
       "videoUrl": "/static/videos/w004.mp4",
       "duration": "02:20",
       "introduction": "利用机器学习算法和Spark大数据处理框架，分析影响农作物产量的多种因素，为农业生产提供智能决策支持。"
@@ -62,10 +86,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["人工智能", "低代码", "UI设计"],
-      "authors": ["戴荃宇"],
+      "tags": [
+        "人工智能",
+        "低代码",
+        "UI设计"
+      ],
+      "authors": [
+        "戴荃宇"
+      ],
       "teacher": "胡明星",
-      "posterUrl": "/static/posters/w005.jpg",
+      "posterUrl": "/data/w005.webp",
       "videoUrl": "/static/videos/w005.mp4",
       "duration": "03:05",
       "introduction": "结合AI智能生成技术的低代码UI生成器，通过自然语言描述自动生成美观的用户界面，降低UI设计门槛。"
@@ -76,10 +106,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["Web应用", "SpringBoot", "预约系统"],
-      "authors": ["胡聪"],
+      "tags": [
+        "Web应用",
+        "SpringBoot",
+        "预约系统"
+      ],
+      "authors": [
+        "胡聪"
+      ],
       "teacher": "冯晓磊",
-      "posterUrl": "/static/posters/w006.jpg",
+      "posterUrl": "/data/w006.webp",
       "videoUrl": "/static/videos/w006.mp4",
       "duration": "02:30",
       "introduction": "基于SpringBoot框架的社区活动室预约管理系统，实现活动室资源的在线预约、审核和管理功能。"
@@ -90,10 +126,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["微信小程序", "医疗服务", "Node.js"],
-      "authors": ["陈瑞"],
+      "tags": [
+        "微信小程序",
+        "医疗服务",
+        "Node.js"
+      ],
+      "authors": [
+        "陈瑞"
+      ],
       "teacher": "郭学芹",
-      "posterUrl": "/static/posters/w007.jpg",
+      "posterUrl": "/data/w007.webp",
       "videoUrl": "/static/videos/w007.mp4",
       "duration": "02:50",
       "introduction": "基于微信小程序和Node.js的医疗陪诊服务平台，为患者提供预约陪诊、在线咨询和服务评价等功能。"
@@ -104,10 +146,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["Web应用", "心理健康", "SpringBoot"],
-      "authors": ["罗量"],
+      "tags": [
+        "Web应用",
+        "心理健康",
+        "SpringBoot"
+      ],
+      "authors": [
+        "罗量"
+      ],
       "teacher": "李袱麟",
-      "posterUrl": "/static/posters/w008.jpg",
+      "posterUrl": "/data/w008.webp",
       "videoUrl": "/static/videos/w008.mp4",
       "duration": "01:58",
       "introduction": "基于SpringBoot和Vue的学生心理咨询评估系统，提供心理测评、在线咨询和数据分析功能，关注学生心理健康。"
@@ -118,10 +166,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["语音识别", "人工智能", "笔记应用"],
-      "authors": ["刘芸"],
+      "tags": [
+        "语音识别",
+        "人工智能",
+        "笔记应用"
+      ],
+      "authors": [
+        "刘芸"
+      ],
       "teacher": "夏杰",
-      "posterUrl": "/static/posters/w009.jpg",
+      "posterUrl": "/data/w009.webp",
       "videoUrl": "/static/videos/w009.mp4",
       "duration": "03:20",
       "introduction": "基于语音识别技术的智能笔记系统，支持语音转文字、智能摘要和关键词提取，提升笔记效率。"
@@ -132,10 +186,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["智能体", "MCP协议", "出行规划"],
-      "authors": ["李荫渠"],
+      "tags": [
+        "智能体",
+        "MCP协议",
+        "出行规划"
+      ],
+      "authors": [
+        "李荫渠"
+      ],
       "teacher": "林久麟",
-      "posterUrl": "/static/posters/w010.jpg",
+      "posterUrl": "/data/w010.webp",
       "videoUrl": "/static/videos/w010.mp4",
       "duration": "04:15",
       "introduction": "基于MCP协议的个人出行智能体，提供智能路线规划、实时交通信息和个性化出行建议。"
@@ -146,10 +206,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["RAG", "大语言模型", "推荐系统"],
-      "authors": ["石亿"],
+      "tags": [
+        "RAG",
+        "大语言模型",
+        "推荐系统"
+      ],
+      "authors": [
+        "石亿"
+      ],
       "teacher": "周志鹏",
-      "posterUrl": "/static/posters/w011.jpg",
+      "posterUrl": "/data/w011.webp",
       "videoUrl": "/static/videos/w011.mp4",
       "duration": "02:50",
       "introduction": "结合RAG检索增强生成技术和DeepSeek大语言模型的电脑硬件推荐系统，根据用户需求提供专业的硬件配置建议。"
@@ -160,10 +226,16 @@
       "majorCode": "software",
       "majorName": "软件工程",
       "theme": "数智焕新",
-      "tags": ["微信小程序", "社交平台", "校友服务"],
-      "authors": ["舒焱"],
+      "tags": [
+        "微信小程序",
+        "社交平台",
+        "校友服务"
+      ],
+      "authors": [
+        "舒焱"
+      ],
       "teacher": "祝念",
-      "posterUrl": "/static/posters/w012.jpg",
+      "posterUrl": "/data/w012.webp",
       "videoUrl": "/static/videos/w012.mp4",
       "duration": "03:40",
       "introduction": "基于微信小程序的校友服务平台，提供校友信息管理、活动发布、资源共享等功能，促进校友交流与合作。"

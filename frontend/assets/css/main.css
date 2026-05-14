@@ -42,10 +42,39 @@ body {
   box-shadow: 0 8px 32px var(--shadow-blue);
 }
 
-/* 渐变文字 */
-.gradient-text {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* 全局触摸优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 确保所有交互元素有足够的触摸区域 */
+  button, a, [role="button"] {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+/* 尊重用户减弱动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 防止移动端双击缩放 */
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* 移动端安全区域适配 */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* 移动端文本自动缩放防止 */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
 }

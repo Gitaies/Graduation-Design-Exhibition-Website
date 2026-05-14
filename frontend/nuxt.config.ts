@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   vite: {
     server: {
       allowedHosts: ['localhost', '192.168.0.16', 'frontend', '.local']
-    }
+    },
   },
 
   nitro: {

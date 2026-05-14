@@ -143,7 +143,7 @@ onMounted(() => {
 .site-footer {
   position: relative;
   background-color: oklch(0.985 0.002 252);
-  background-image: url('/images/ftbg1.png');
+  background-image: url('/images/ftbg1.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

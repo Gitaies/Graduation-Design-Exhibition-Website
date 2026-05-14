@@ -6,7 +6,7 @@
 import * as THREE from 'three'
 import { OrbitCamera } from '~/composables/useOrbitCamera'
 import { useRafManager } from '~/composables/useRafManager'
-import heroIconSrc from '~/assets/images/hero/hero_icon.png'
+import heroIconSrc from '~/assets/images/hero/hero_icon.webp'
 
 const containerRef = ref<HTMLDivElement | null>(null)
 
@@ -111,13 +111,48 @@ function onMouseMove(e: MouseEvent) {
   orbitCamera?.setMouse(x, y)
 }
 
+function onTouchMove(e: TouchEvent) {
+  if (e.touches.length > 0) {
+    const touch = e.touches[0]
+    const x = (touch.clientX / window.innerWidth) * 2 - 1
+    const y = (touch.clientY / window.innerHeight) * 2 - 1
+    orbitCamera?.setMouse(x, y)
+  }
+}
+
+let gyroEnabled = false
+function onDeviceOrientation(e: DeviceOrientationEvent) {
+  if (!orbitCamera || gyroEnabled) return
+  if (e.gamma == null || e.beta == null) return
+  // gamma: left-right tilt (-90 to 90), beta: front-back tilt (-180 to 180)
+  const x = Math.max(-1, Math.min(1, (e.gamma || 0) / 30))
+  const y = Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 45))
+  orbitCamera.setMouse(x, y)
+}
+
+async function requestGyro() {
+  if (typeof DeviceOrientationEvent !== 'undefined' && 'requestPermission' in DeviceOrientationEvent) {
+    try {
+      const perm = await (DeviceOrientationEvent as any).requestPermission()
+      if (perm === 'granted') gyroEnabled = true
+    } catch { /* user denied */ }
+  } else if ('ondeviceorientation' in window) {
+    gyroEnabled = true
+  }
+}
+
 onMounted(() => {
   init()
   window.addEventListener('mousemove', onMouseMove, { passive: true })
+  window.addEventListener('touchmove', onTouchMove, { passive: true })
+  window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true })
+  requestGyro()
 })
 
 onUnmounted(() => {
   window.removeEventListener('mousemove', onMouseMove)
+  window.removeEventListener('touchmove', onTouchMove)
+  window.removeEventListener('deviceorientation', onDeviceOrientation)
   resizeObserver?.disconnect()
   if (renderObj) useRafManager().remove(renderObj)
   orbitCamera?.dispose()
